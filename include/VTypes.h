@@ -14,22 +14,15 @@
 #if !defined(__VTYPES_H_INCLUDED__)
 #define __VTYPES_H_INCLUDED__
 
-#include "VPlatform.h"
-
 typedef unsigned short  VUSHORT;
 typedef unsigned int    VUINT;
 typedef unsigned long   VULONG;
 typedef unsigned char   VBYTE;
 
-#define ul_size sizeof(VULONG)
-#define ui_size sizeof(VUINT)
-#define us_size sizeof(VUSHORT)
-#define uc_size sizeof(VBYTE)
-
-#if VPLATFORM == PLATFORM_WINDOWS
+#if defined(WIN32) || defined(_WINDOWS)
 #define THREAD_FUNC		void
 #define THREAD_RETURN	return
-#elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+#else
 #define THREAD_FUNC		void*
 #define THREAD_RETURN	return NULL
 #endif
@@ -57,13 +50,9 @@ enum VErrorCodes
 	VERR_INVALID_VALUE,		// 117
 	VERR_TIMEOUT,			// 118
 	VERR_RESOLVE_ERROR,		// 119
-	VERR_ALREADY_IN_USE,	// 120
-	VERR_NET,				// 121
-	VERR_MAX				// 122
+	VERR_MAX				// 120
 };
 
 typedef VErrorCodes VRESULT;
 
 #endif // __VTYPES_H_INCLUDED__
-
-/* vi: set ts=4: */

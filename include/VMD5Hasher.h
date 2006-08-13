@@ -92,6 +92,6 @@ private:
 
 } // End Namespace
 
-#endif // __VMD5HASHER_H_INCLUDED__
+#endif // __VMD5HASHERFILE_H_INCLUDED__
 
 /* vi: set ts=4: */

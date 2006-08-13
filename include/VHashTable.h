@@ -189,5 +189,3 @@ private:
 } // End Namespace
 
 #endif // __VHASHTABLE_H_INCLUDED__
-
-/* vi: set ts=4: */

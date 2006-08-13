@@ -46,8 +46,6 @@ static const char* ErrStrings[] = {
 	"Invalid value supplied",				// 117
 	"Operation timed out",					// 118
 	"Name resolution error",				// 119
-	"Resource already in use",				// 120
-	"Network error occurred"				// 121
 };
 
 /********************************************************************
@@ -115,8 +113,6 @@ const char* VObject::RetString(VRESULT pResult)
 	CASE_VRESULT(VERR_INVALID_VALUE);
 	CASE_VRESULT(VERR_TIMEOUT);
 	CASE_VRESULT(VERR_RESOLVE_ERROR);
-	CASE_VRESULT(VERR_ALREADY_IN_USE);
-	CASE_VRESULT(VERR_NET);
 	default:
 		return "ZERR_UNKNOWN";
 	}

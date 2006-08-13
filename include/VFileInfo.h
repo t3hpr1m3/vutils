@@ -154,5 +154,3 @@ void VFileInfo::Reset()
 } // End Namespace
 
 #endif // __VFILEINFO_H_INCLUDED__
-
-/* vi: set ts=4: */

@@ -11,23 +11,18 @@
  *																		*
  *																		*
  *======================================================================*/
-#if !defined(__VCONFIG_H_INCLUDED__)
-#define __VCONFIG_H_INCLUDED__
+#if !defined(__VTCONFIG_H_INCLUDED__)
+#define __VTCONFIG_H_INCLUDED__
 
-#include "VPlatform.h"
-
-/* System Headers */
 #include <utility>
 #include <map>
-
-/* Local Headers */
 #include "VString.h"
 #include "VFile.h"
 
 namespace VUtils
 {
 
-class VConfig : public VFile
+	class VConfig : public VFile
 {
 private:
 	typedef std::map<const VString, VString> _Settings;
@@ -92,5 +87,3 @@ private:
 } // End Namespace
 
 #endif // __VCONFIG_H_INCLUDED__
-
-/* vi: set ts=4: */

@@ -11,19 +11,29 @@
  *																		*
  *																		*
  *======================================================================*/
-#if !defined(__VMUTEX_H_INCLUDED__)
-#define __VMUTEX_H_INCLUDED__
+/*======================================================================*
+ *																		*
+ *					* * N O   S T E A L I N G * *						*
+ *																		*
+ *  Copyright (C) 2004 UDPViper   All Rights Reserved					*
+ *																		*
+ *	AUTHORS																*
+ *		V-Man <V-Man@udpviper.com>										*
+ *		chmod 700 <phlux@udpviper.com>									*
+ *																		*
+ *	WEB																	*
+ *		www.udpviper.com <- go there for stuff.  like boobies.			*
+ *																		*
+ *																		*
+ *======================================================================*/
+#if !defined(__VTMUTEX_H_INCLUDED__)
+#define __VTMUTEX_H_INCLUDED__
 
-#include "VPlatform.h"
-
-/* System Headers */
-#if VPLATFORM == PLATFORM_WINDOWS
+#if defined(WIN32) || defined(_WINDOWS)     /* Windows platforms    */
 #include <windows.h>
-#elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+#else                                       /* Unix/linux */
 #include <pthread.h>
-#endif
-
-/* Local Headers */
+#endif                                      /* End platform specific */
 
 namespace VUtils
 {
@@ -33,33 +43,33 @@ class VMutex
 
 public:
     VMutex(void) {
-#if VPLATFORM == PLATFORM_WINDOWS
+#if defined(WIN32) || defined(_WINDOWS)     /* Windows platforms */
         InitializeCriticalSection(&m_lock);
-#elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+#else                                       /* Unix/linux */
 		pthread_mutex_init(&m_lock, NULL);
-#endif
+#endif                                      /* End platform specific */
     }
 
     void Lock(void) {
-#if VPLATFORM == PLATFORM_WINDOWS
+#if defined(WIN32) || defined(_WINDOWS)     /* Windows platforms */
         EnterCriticalSection(&m_lock);
-#elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+#else                                       /* Unix/linux */
 		pthread_mutex_lock(&m_lock);
-#endif
+#endif                                      /* End platform specific */
     }
 
     void Unlock(void) {
-#if VPLATFORM == PLATFORM_WINDOWS
+#if defined(WIN32) || defined(_WINDOWS)     /* Windows platforms */
         LeaveCriticalSection(&m_lock);
-#elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+#else                                       /* Unix/linux */
 		pthread_mutex_unlock(&m_lock);
-#endif
+#endif                                      /* End platform specific */
     }
 
 private:
-#if VPLATFORM == PLATFORM_WINDOWS
+#if defined(WIN32) || defined(_WINDOWS)     /* Windows platforms */
     CRITICAL_SECTION m_lock;
-#elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+#else                                       /* Unix/linux */
     pthread_mutex_t m_lock;
 #endif                                      /* End platform specific */
 
@@ -67,6 +77,4 @@ private:
 
 } // End Namespace
 
-#endif // __VMUTEX_H_INCLUDED__
-
-/* vi: set ts=4: */
+#endif // __VTMUTEX_H_INCLUDED__

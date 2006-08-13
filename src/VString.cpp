@@ -145,16 +145,6 @@ const VString& VString::SubStr(int pOffset, int pCount/*=-1*/) const
  * ===========	==================================	===============	*
  *																	*
  *------------------------------------------------------------------*/
-int VString::Find(const char *pStr) const
-{
-	char *vPc = strstr(mData, pStr);
-
-	if (vPc == NULL)
-		return -1;
-	else
-		return (vPc - mData);
-}
-
 int VString::Find(const char pChar) const
 {
 	char *vPc = strchr(mData, pChar);

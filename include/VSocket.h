@@ -24,6 +24,8 @@
 #include "VSocketCommon.h"
 
 /* Macros */
+#define LOG_SOCKET(message, ...) \
+	LogSocket(__FILE__, __FUNCTION__, __LINE__, message, ## __VA_ARGS__)
 
 namespace VUtils
 {

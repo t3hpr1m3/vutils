@@ -26,15 +26,9 @@
 #include "VMutex.h"
 #include "VTypes.h"
 #include "VObject.h"
-#include "VErrorBlock.h"
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
 
 /* Macros */
 #define VTRACE VLog::GetLog().Trace
-#define VERROR (VErrorBlock(__FILE__, __FUNCTION__, __LINE__))
 
 #define DECLARE_CLASS( a ) \
 		static const char __CLASS__[] = a
@@ -42,6 +36,7 @@
 #define Z_TO_STRING( a ) VObject::RetString( a )
 
 #ifdef TRACE_ENABLE
+
 #if VPLATFORM == PLATFORM_WINDOWS
 #define BEG_FUNC(func) \
 	static char __FUNCTION__[] = func; \
@@ -64,8 +59,7 @@
 		EndFunc( __CFUNC__.c_str(), x)
 
 #define END_FUNCV() \
-		EndFunc( __CFUNC__.c_str() );\
-		return
+		EndFunc( __CFUNC__.c_str() )
 
 #else // No Trace
 
@@ -84,7 +78,7 @@
 
 #define END_FUNC( x ) \
 	x
-#define END_FUNCV() return
+#define END_FUNCV()
 #endif // TRACE_ENABLE
 
 namespace VUtils

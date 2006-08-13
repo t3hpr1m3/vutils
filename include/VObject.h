@@ -14,8 +14,6 @@
 #if !defined(__VOBJECT_H_INCLUDED__)
 #define __VOBJECT_H_INCLUDED__
 
-#include "VPlatform.h"
-
 /* System Headers */
 
 /* Local Headers */

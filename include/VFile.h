@@ -1,16 +1,22 @@
-/*======================================================================*
- *																		*
- *					* * N O   S T E A L I N G * *						*
- *																		*
- *  Copyright (C) 2004 V-Man   All Rights Reserved						*
- *																		*
- *	AUTHOR																*
- *		V-Man <V-Man@udpviper.com>										*
- *																		*
- *	Dis is mah stuff.  If'n you use it, I get dah credit.  k?			*
- *																		*
- *																		*
- *======================================================================*/
+/*============================================================================*
+ *                                                                            *
+ *  Copyright (C) 2004 UDPViper  All Rights Reserved                          *
+ *                                                                            *
+ *  AUTHORS                                                                   *
+ *      V-Man <V-Man@udpviper.com>                                            *
+ *      chmod 700 <phlux@udpviper.com>                                        *
+ *                                                                            *
+ *  WEB                                                                       *
+ *      www.udpviper.com <- go there for stuff.  like boobies                 *
+ *                                                                            *
+ *                      * * N O   S T E A L I N G * *                         *
+ *                                                                            *
+ *============================================================================*
+ *                                  CHANGELOG                                 *
+ *    Date      Description                                     Author        *
+ * -----------  ---------------------------------------------   ------------- *
+ *                                                                            *
+ *============================================================================*/
 #if !defined(__VFILE_H_INCLUDED__)
 #define __VFILE_H_INCLUDED__
 
@@ -151,9 +157,10 @@ private:
 	/*==================================*
 	 *             VARIABLES            *
 	 *==================================*/
-#if VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+#if defined(WIN32) || defined(_WINDOWS)     /* Windows platforms */
+#else                                       /* Unix/linux */
 	static int			MAX_PATH;		/**< Maximum length for path strings */
-#endif
+#endif                                      /* End platform specific */
 	static int			MAX_READ;		/**< Maximum number of bytes to read
 											 on each call to Read() or
 											 ReadLine()	*/

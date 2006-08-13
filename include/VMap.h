@@ -11,16 +11,12 @@
  *																		*
  *																		*
  *======================================================================*/
+
 #if !defined(__VMAP_H_INCLUDED__)
 #define __VMAP_H_INCLUDED__
 
-#include "VPlatform.h"
-
-/* System Headers */
-#include <map>
-
-/* Local Headers */
 #include "VMutex.h"
+#include <map>
 
 namespace VUtils
 {
@@ -48,5 +44,3 @@ VMap<Key, T, Pred>::~VMap()
 } // End Namespace
 
 #endif // __VMAP_H_INCLUDED__
-
-/* vi: set ts=4: */

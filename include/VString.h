@@ -44,9 +44,7 @@ public:
 	int				Length() const;
 	int				Size() const;
 	const VString&	SubStr(int pOffset, int pCount = -1) const;
-	int				Find(const char *pChar) const;
 	int				Find(const char pChar) const;
-	int				RFind(const char *pChar) const;
 	int				RFind(const char pChar) const;
 
 	/*==================================*
@@ -56,7 +54,7 @@ public:
 	void			Copy(const char *pString, ...);
 	void			Cat(const char *pString, ...);
 	void			Cat(const char pChar);
-	bool			Compare(const char *pString) const;
+	int				Compare(const char *pString) const;
 	int				Replace(const char *pSearch, const char *pString);
 	const VString	Trim() const;
 
@@ -194,9 +192,9 @@ int VString::Size() const
  *																	*
  *------------------------------------------------------------------*/
 inline
-bool VString::Compare(const char *pString) const
+int VString::Compare(const char *pString) const
 {
-	return (strcmp(mData, pString) == 0);
+	return strcmp(mData, pString);
 }
 
 /*------------------------------------------------------------------*
@@ -265,19 +263,19 @@ VString::operator const char*() const
 inline
 bool VString::operator<(const VString& pString) const
 {
-	return this->Compare(pString);
+	return (this->Compare(pString) < 0);
 }
 
 inline
 bool VString::operator==(const VString& pString) const
 {
-	return this->Compare(pString);
+	return (this->Compare(pString) == 0);
 }
 
 inline
 bool VString::operator==(const char *pString) const
 {
-	return this->Compare(pString);
+	return (this->Compare(pString) == 0);
 }
 
 inline char* VString::NewBuf(const int pSize) const
