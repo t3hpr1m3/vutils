@@ -26,9 +26,15 @@
 #include "VMutex.h"
 #include "VTypes.h"
 #include "VObject.h"
+#include "VErrorBlock.h"
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* Macros */
 #define VTRACE VLog::GetLog().Trace
+#define VERROR (VErrorBlock(__FILE__, __FUNCTION__, __LINE__))
 
 #define DECLARE_CLASS( a ) \
 		static const char __CLASS__[] = a

@@ -50,7 +50,9 @@ enum VErrorCodes
 	VERR_INVALID_VALUE,		// 117
 	VERR_TIMEOUT,			// 118
 	VERR_RESOLVE_ERROR,		// 119
-	VERR_MAX				// 120
+	VERR_ALREADY_IN_USE,	// 120
+	VERR_NET,				// 121
+	VERR_MAX				// 122
 };
 
 typedef VErrorCodes VRESULT;
