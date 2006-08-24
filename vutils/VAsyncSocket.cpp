@@ -39,6 +39,8 @@ VMutex			VAsyncSocket::mLogMutex;
 VMutex			VAsyncSocket::mProcessLock;
 thread_handle	VAsyncSocket::mProcessThread;
 
+DECLARE_CLASS( "VAsyncSocket" );
+
 /********************************************************************
  *          C O N S T R U C T I O N / D E S T R U C T I O N         *
  ********************************************************************/

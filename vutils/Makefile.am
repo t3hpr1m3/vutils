@@ -1,5 +1,6 @@
-lib_LIBRARIES = libvutils.a
-libvutils_a_SOURCES = VConfig.cpp \
+INCLUDES = -I@top_srcdir@
+lib_LTLIBRARIES = libvutils.la
+libvutils_la_SOURCES = VConfig.cpp \
 						VException.cpp \
 						VFile.cpp \
 						VLog.cpp \
@@ -10,6 +11,7 @@ libvutils_a_SOURCES = VConfig.cpp \
 						VSocket.cpp \
 						VAsyncSocket.cpp \
 						VErrorBlock.cpp
+libvutils_la_LDFLAGS = -version-info 0:9:0
 
 pkginclude_HEADERS = VCommon.h \
 						VConfig.h \

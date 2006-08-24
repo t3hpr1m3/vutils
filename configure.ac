@@ -1,13 +1,16 @@
-AC_INIT([VUtils], [0.1.0], [volzman19@yahoo.com], [vutils])
-AC_CONFIG_SRCDIR([vutils/VObject.cpp])
+###
+# Makefile for vutils
+###
+AC_INIT([vutils/VObject.cpp])
+AM_INIT_AUTOMAKE([vutils], [0.6.0], [volzman19@yahoo.com])
 AC_CONFIG_HEADER([vutils/config.h])
-AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
-AC_PROG_RANLIB
+AC_PROG_LIBTOOL
+AC_PROG_INSTALL
 
 # Checks for libraries.
 AC_MSG_CHECKING([whether to enable trace output])

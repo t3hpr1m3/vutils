@@ -98,6 +98,9 @@ int	MakeFName(const char *pClass, const char *pFunc, std::string& pCFname);
 
 class VLog : public VMutex
 {
+
+friend class VErrorBlock;
+
 public:
 	class CUDPFuncWrapper
 	{
