@@ -1578,7 +1578,6 @@ void VAsyncSocket::Process()
 			}
 			mDirty = false;
 		}
-		SocketReport();
 		VTRACE("Sockets in poll vector: %d\n", mPollFDs.size());
 
 		mSocketMap.Unlock();

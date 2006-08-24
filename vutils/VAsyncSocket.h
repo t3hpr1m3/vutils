@@ -121,7 +121,6 @@ private:
 	void				SetDirty();
 	bool				GetIPbyName(const char *pHost, char *pAddr,
 							int pSize);
-	void				SocketReport();
 	bool				BeginProcess();
 	void				SetStatus(SS_STATE pStatus);
 
