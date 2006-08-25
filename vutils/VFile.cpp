@@ -96,7 +96,7 @@ VFile::~VFile()
  *					Path, relative or absolute, of the file
  *					to be opened.
  *	@param		pOps
- *					FileOp flags indicating how the file is to be processed.
+ *					VFile::FileOp flags indicating how the file is to be processed.
  *
  *	@return		Success/failure
  */
