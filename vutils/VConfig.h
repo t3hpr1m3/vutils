@@ -14,10 +14,18 @@
 #if !defined(__VCONFIG_H_INCLUDED__)
 #define __VCONFIG_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
+/* System Headers */
 #include <utility>
 #include <map>
+
+/* Local Headers */
 #include <vutils/VString.h>
 #include <vutils/VFile.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace VUtils
 {

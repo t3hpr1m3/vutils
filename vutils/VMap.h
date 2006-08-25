@@ -14,11 +14,16 @@
 #if !defined(__VMAP_H_INCLUDED__)
 #define __VMAP_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 #include <map>
 
 /* Local Headers */
 #include <vutils/VMutex.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace VUtils
 {

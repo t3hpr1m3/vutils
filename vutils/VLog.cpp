@@ -152,6 +152,7 @@ void VLog::EnableTrace(const char *pPgmName)
 #endif // TRACE_ENABLE
 }
 
+#ifdef TRACE_ENABLE
 /*------------------------------------------------------------------*
  *							 Trace()								*
  *------------------------------------------------------------------*/
@@ -174,7 +175,6 @@ void VLog::EnableTrace(const char *pPgmName)
  * ===========	==================================	===============	*
  *																	*
  *------------------------------------------------------------------*/
-#ifdef TRACE_ENABLE
 void VLog::Trace(const char *pMsg, ...)
 {
 	static char		vBuffer[1024];

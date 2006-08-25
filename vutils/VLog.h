@@ -27,6 +27,9 @@
 #include <vutils/VTypes.h>
 #include <vutils/VObject.h>
 #include <vutils/VErrorBlock.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* Macros */
 #define VTRACE VLog::GetLog().Trace

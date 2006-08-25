@@ -84,8 +84,8 @@ VString::~VString()
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		nOffset	Index at which to begin returning substring.
- *	@param		nCount	Number of characters to return
+ *	@param		pOffset	Index at which to begin returning substring.
+ *	@param		pCount	Number of characters to return
  *
  *	@returns	(const char*) Requested characters.
  */
@@ -126,18 +126,16 @@ const VString& VString::SubStr(int pOffset, int pCount/*=-1*/) const
 }
 
 /*------------------------------------------------------------------*
- *								SubStr()							*
+ *								Find()								*
  *------------------------------------------------------------------*/
 /**
- *	@brief		Returns nCount number of characters from the beginning
- *				of this VString, up to the length of the VString.
+ *	@brief		Searches the string for the given character.
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		nOffset	Index at which to begin returning substring.
- *	@param		nCount	Number of characters to return
+ *	@param		pChar	Character to scan for
  *
- *	@returns	(const char*) Requested characters.
+ *	@returns	(int) Offset of the first instance of pChar, or -1.
  */
 /*------------------------------------------------------------------*
  * MODIFICATIONS													*
@@ -178,7 +176,7 @@ int VString::RFind(const char pChar) const
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		nSize	New size for this VString object
+ *	@param		pSize	New size for this VString object
  *
  *	@returns	void
  */
@@ -232,7 +230,7 @@ void VString::Resize(int pSize)
  *
  *	@remarks	VString is resized to the length of the string supplied.
  *
- *	@param		pcNewString	Char array with optional printf-style formatting
+ *	@param		pString	Char array with optional printf-style formatting
  *
  *	@returns	void
  */
@@ -275,7 +273,7 @@ void VString::Copy(const char *pString, ...)
  *
  *	@remarks	VString is resized accordingly.
  *
- *	@param		pc	Char array with optional printf-style formatting
+ *	@param		pString	Char array with optional printf-style formatting
  *
  *	@returns	void
  */
@@ -336,8 +334,8 @@ void VString::Cat(const char pChar)
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		pcSearch	String to be replaced
- *	@param		pcStr		String to be inserted
+ *	@param		pSearch	String to be replaced
+ *	@param		pString	String to be inserted
  *
  *	@returns	(int) Final length of the string.
  */
@@ -456,7 +454,7 @@ const VString VString::Trim() const
  *	@remarks	Returns a reference so the character can be
  *				replaced with another char.
  *
- *	@param		offset	Index of the element to be returned
+ *	@param		pOffset	Index of the element to be returned
  *
  *	@returns	(char&) Character requested.
  */
@@ -483,7 +481,7 @@ char& VString::operator[](int pOffset)
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		offset	Index of the element to be returned
+ *	@param		pOffset	Index of the element to be returned
  *
  *	@returns	(char) Character requested.
  */
@@ -509,7 +507,7 @@ char VString::operator[](int pOffset) const
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		strCat	VString to be copied to the end of this VString
+ *	@param		pStrCat	VString to be copied to the end of this VString
  *
  *	@returns	(String) Result of concatenation.
  */
@@ -542,7 +540,7 @@ const VString& VString::operator+=(const char *pCat)
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		strCat	VString to be added to the end of this VString
+ *	@param		pStrCat	VString to be added to the end of this VString
  *
  *	@returns	(String&) Result of concatenation.
  */
@@ -578,9 +576,9 @@ const VString VString::operator+(const char *pCat) const
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		pcFront	Char pointer to be the beginning of the
+ *	@param		pFront	Char pointer to be the beginning of the
  *				resulting VString
- *	@param		strBack	VString object to be the end of the resulting
+ *	@param		pBack	VString object to be the end of the resulting
  *				VString.
  *
  *	@returns	(CStr) Result of concatenation.
@@ -607,8 +605,8 @@ const VString operator+(const char *pFront, const VString& pBack)
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		os		Stream object to output to
- *	@param		strOut	VString object to be output
+ *	@param		pOs		Stream object to output to
+ *	@param		pStrOut	VString object to be output
  *
  *	@returns	(ostream&) Output object.
  */

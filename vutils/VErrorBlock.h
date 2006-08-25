@@ -19,6 +19,9 @@
 /* System Headers */
 
 /* Local Headers */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* Macros */
 

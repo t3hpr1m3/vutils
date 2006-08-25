@@ -37,6 +37,9 @@
 #include <vutils/VMutex.h>
 #include <vutils/VMap.h>
 #include <vutils/VVector.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace VUtils
 {

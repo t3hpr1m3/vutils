@@ -2,7 +2,7 @@
 # Makefile for vutils
 ###
 AC_INIT([vutils/VObject.cpp])
-AM_INIT_AUTOMAKE([vutils], [0.6.0], [volzman19@yahoo.com])
+AM_INIT_AUTOMAKE([vutils], [0.6.1], [volzman19@yahoo.com])
 AC_CONFIG_HEADER([vutils/config.h])
 AM_MAINTAINER_MODE
 

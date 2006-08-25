@@ -21,6 +21,8 @@
 /* Local Headers */
 #include <vutils/VLog.h>
 
+DECLARE_CLASS( "VAsyncSocket" );
+
 namespace VUtils
 {
 
@@ -38,8 +40,6 @@ FILE*			VAsyncSocket::mLogFile = NULL;
 VMutex			VAsyncSocket::mLogMutex;
 VMutex			VAsyncSocket::mProcessLock;
 thread_handle	VAsyncSocket::mProcessThread;
-
-DECLARE_CLASS( "VAsyncSocket" );
 
 /********************************************************************
  *          C O N S T R U C T I O N / D E S T R U C T I O N         *

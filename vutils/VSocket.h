@@ -21,10 +21,11 @@
 /* Local Headers */
 #include <vutils/VObject.h>
 #include <vutils/VSocketCommon.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* Macros */
-#define LOG_SOCKET(message, ...) \
-	LogSocket(__FILE__, __FUNCTION__, __LINE__, message, ## __VA_ARGS__)
 
 namespace VUtils
 {
@@ -66,7 +67,6 @@ public:
 							int nOptionLen, int pLevel = SOL_SOCKET);
 	SS_STATE			GetStatus() const;
 	SOCKET				GetHandle() const;	
-	long				GetEvents() const;
 
 	/*==================================*
 	 *           OPERATIONS             *
@@ -76,12 +76,11 @@ public:
 							const char* pSockAddr = NULL);
 	bool				Attach(SOCKET pHandle);
 	SOCKET				Detach();
-	bool				InitLog(const char *pLogName);
 	bool				Accept(VSocket* pNewSocket, sockaddr* pSockAddr = NULL,
 							socklen_t* pSockAddrLen = NULL);
 	bool				Bind(VUSHORT pPort, const char *pAddress = NULL);
 	void				Close();
-	bool				Connect(const char *pAddress, VUSHORT pPort, VUSHORT pTimeout);
+	bool				Connect(const char *pAddress, VUSHORT pPort);
 	bool				Listen(int pConnBacklog = 5);
 	int					Receive(char *pBuffer, int pBufLen, int pFlags = 0);
 	int					Send(const char *pBuffer, int pBufLen);
@@ -102,10 +101,7 @@ protected:
 	/*==================================*
 	 *             INTERNALS            *
 	 *==================================*/
-	void				LogSocket(const char *pFile, const char *pFunc,
-							const int pLine, char *pMessage, ...);
 	bool				GetIPbyName(const char *pHost, char *pAddr,	int pSize);
-	void				SocketReport();
 	void				SetStatus(SS_STATE pStatus);
 
 protected:
@@ -120,13 +116,6 @@ protected:
 											  	 socket */
 	int					mError;				/**< Buffer to hold the last error
 											  	 encountered. */
-	static FILE*		mLogFile;			/**< Name of the file to use for
-											  	 logging.  If NULL, no logging
-												 will be performed. */
-	static VMutex		mLogMutex;			/**< Used to lock the log file for
-											  	 dedicated logging */
-	static bool			mLogEnabled;		/**< Whether or not logging
-											  	 was enabled at runtime. */
 };
 
 

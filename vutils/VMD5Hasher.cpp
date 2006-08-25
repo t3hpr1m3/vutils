@@ -26,6 +26,8 @@
 
 using std::ifstream;
 
+DECLARE_CLASS( "VMD5Hasher" );
+
 namespace VUtils
 {
 
@@ -79,8 +81,6 @@ VBYTE VMD5Hasher::MD5_PADDING[64] = {
 
 /* Static Variables */
 
-DECLARE_CLASS( "VMD5Hasher" );
-
 /********************************************************************
  *																	*
  *          C O N S T R U C T I O N / D E S T R U C T I O N         *
@@ -110,7 +110,8 @@ VMD5Hasher::~VMD5Hasher()
  *	@author		Josh Williams
  *	@date		12-Sep-2004
  *
- *	@param		digest	buff to hold the generated digest.
+ *	@param		pBuf	buff to hold the generated digest.
+ *	@param		pLen	Size of pBuf
  *
  *	@return
  *				- Z_OK		Digest returned
@@ -145,11 +146,9 @@ VRESULT VMD5Hasher::GetDigest(VBYTE *pBuf, VUINT pLen)
  *	@author		Josh Williams
  *	@date		12-Sep-2004
  *
- *	@param		digest	buff to hold the generated digest.
+ *	@param		pBuf	buff to hold the generated digest.
+ * 	@param		pLen	Size of pBuf
  *
- *	@return
- *				- Z_OK		Digest returned
- *				- Z_FAIL	Hashing not yet performed
  */
 /*------------------------------------------------------------------*
  * MODIFICATIONS													*
@@ -186,8 +185,6 @@ VRESULT VMD5Hasher::GetDigestString(char *pBuf, VUINT pLen)
  *	@author		Josh Williams
  *	@date		12-Oct-2004
  *
- *	@param		pseudoRandomNumber
- *
  *	@returns	void
  */
 /*------------------------------------------------------------------*
@@ -220,8 +217,8 @@ void VMD5Hasher::Init()
  *	@author		Josh Williams
  *	@date		12-Oct-2004
  *
- *	@param		inBuf	Buffer containing data to be hashed
- *	@param		inLen	Number of VBYTEs contained in inBuf
+ *	@param		pBuf	Buffer containing data to be hashed
+ *	@param		pLen	Number of VBYTEs contained in inBuf
  *
  *	@returns	void
  *
@@ -280,8 +277,8 @@ void VMD5Hasher::Update(VBYTE *pBuf, VUINT pLen)
  *	@author		Josh Williams
  *	@date		12-Oct-2004
  *
- *	@param		buf		Output buffer
- *	@param		in		Input buffer
+ *	@param		pBuf	Output buffer
+ *	@param		pIn		Input buffer
  *
  *	@returns	void
  */

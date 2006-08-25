@@ -14,11 +14,16 @@
 #if !defined(__VEXCEPTION_H_INCLUDED__)
 #define __VEXCEPTION_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 #include <iostream>
 
 /* Local Headers */
 #include <vutils/VString.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* Macros */
 #define EXCPT(a, b) throw (a ( b , __FILE__ , __FUNCTION__ , __LINE__ ))
@@ -65,7 +70,6 @@ public:
 	/*==================================*
 	 *			   OPERATORS			*
 	 *==================================*/
-	friend ostream&		operator<<(ostream& pOs, const VException& pExc);
 
 protected:
 	/*==================================*

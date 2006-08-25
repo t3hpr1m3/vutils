@@ -96,7 +96,7 @@ VFile::~VFile()
  *					Path, relative or absolute, of the file
  *					to be opened.
  *	@param		pOps
- *					Flags indicating how the file is to be processed.
+ *					FileOp flags indicating how the file is to be processed.
  *
  *	@return		Success/failure
  */
@@ -222,8 +222,8 @@ VRESULT VFile::Read(char *pBuffer, int &pBytes)
  *	@author		Josh Williams
  *	@date		02-Dec-2004
  *
- *	@param		strBuffer	VString object to hold the data read
- *	@param		nMaxRead	Maximum number of bytes to read from file
+ *	@param		pBuffer	VString object to hold the data read
+ *	@param		pBytes	Maximum number of bytes to read from file
  *
  *	@return		Number of bytes read.  0 is returned if already at eof.
  *
@@ -295,8 +295,8 @@ VRESULT VFile::ReadLine(VString& pBuffer, int &pBytes)
  *	@author		Josh Williams
  *	@date		02-Dec-2004
  *
- *	@param		pcBuffer	Data to be written
- *	@param		nBytes		Number of bytes contained in pcBuffer to
+ *	@param		pBuffer		Data to be written
+ *	@param		pBytes		Number of bytes contained in pcBuffer to
  *							be written.
  *
  *	@return		Success/failure
@@ -335,7 +335,7 @@ VRESULT VFile::Write(const char *pBuffer, int pBytes)
  *	@author		Josh Williams
  *	@date		02-Dec-2004
  *
- *	@param		lOffset		Position, in bytes, to orient the pointer.
+ *	@param		pOffset		Position, in bytes, to orient the pointer.
  *
  *	@return		Success/failure
  *
@@ -377,9 +377,6 @@ VRESULT VFile::Seek(long pOffset)
  *
  *	@author		Josh Williams
  *	@date		02-Dec-2004
- *
- *	@param		strBuffer	VString object to hold the data read
- *	@param		nMaxRead	Maximum number of bytes to read from file
  *
  *	@return		None
  */
@@ -443,9 +440,9 @@ VRESULT VFile::Truncate()
  *	@author		Josh Williams
  *	@date		02-Dec-2004
  *
- *	@param		strFile		Path, relative or absolute, of the file
+ *	@param		pFile		Path, relative or absolute, of the file
  *							to stat.
- *	@param		fInfo		Object to hold the obtained information.
+ *	@param		pInfo		Object to hold the obtained information.
  *
  *	@retval		VERR_INVALID_PATH	Path is invalid
  *	@retval		VERR_FILE_NOT_FOUND	Specified file does not exist
@@ -492,9 +489,10 @@ VRESULT VFile::Stat(const VString& pFile, VFileInfo& pInfo)
  *	@author		Josh Williams
  *	@date		02-Dec-2004
  *
- *	@param		strFile		Path of the file to be resolved
- *	@param		strPath		Evaluated absolute path of the file
- *	@param		strName		Simple name of the file (no path)
+ *	@param		pFile		Path of the file to be resolved
+ *	@param		pPath		Evaluated absolute path of the file
+ *	@param		pName		Simple name of the file (no path)
+ *	@param		pExt		File extension
  *
  *	@return		Success/failure
  *
@@ -622,7 +620,7 @@ VRESULT VFile::ResolvePath(const VString& pFile, VString& pPath,
  *	@author		Josh Williams
  *	@date		02-Dec-2004
  *
- *	@param		strSum		Buffer to hold the 32 byte sum
+ *	@param		pSum		Buffer to hold the 32 byte sum
  *
  *	@return		Success/failure
  *

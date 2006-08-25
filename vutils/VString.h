@@ -14,11 +14,16 @@
 #if !defined(__VSTRING_H_INCLUDED__)
 #define __VSTRING_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 #include <cstring>
 #include <iostream>
 
 /* Local Headers */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 using std::ostream;
 
@@ -72,10 +77,10 @@ public:
 	const VString&	operator+=(const char *pCat);
 	const VString	operator+(const VString& pStrCat) const;
 	const VString	operator+(const char *pCat) const;
-	friend const VString	operator+(const char *pStrFront,
-									const VString& pStrBack);
+	friend const VString	operator+(const char *pFront,
+									const VString& pBack);
 					operator const char*() const;
-	friend ostream& operator<<(ostream& os, const VString& pStrOut);
+	friend ostream& operator<<(ostream& pOs, const VString& pStrOut);
 
 protected:
 	/*==================================*
@@ -181,7 +186,7 @@ int VString::Size() const
  *	@author		Josh Williams
  *	@date		30-Aug-2004
  *
- *	@param		pc	Char array to be compared against
+ *	@param		pString	Char array to be compared against
  *
  *	@returns	0 if the string matches, <>0 otherwise
  */
@@ -205,7 +210,7 @@ int VString::Compare(const char *pString) const
  *	@author		Josh Williams
  *	@date		19-Sep-2003
  *
- *	@param		strSource	VString whose value we should inherit.
+ *	@param		pSource	VString whose value we should inherit.
  *
  *	@returns	(CStr&) This object after manipulation.
  */

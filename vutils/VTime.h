@@ -14,11 +14,16 @@
 #if !defined(__VTIME_H_INCLUDED__)
 #define __VTIME_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 #include <ctime>
 
 /* Local Headers */
 #include <vutils/VString.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace VUtils
 {

@@ -14,6 +14,8 @@
 #if !defined(__VTMUTEX_H_INCLUDED__)
 #define __VTMUTEX_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 #if defined(WIN32) || defined(_WINDOWS)     /* Windows platforms    */
 #include <windows.h>
@@ -22,6 +24,9 @@
 #endif                                      /* End platform specific */
 
 /* Local Headers */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace VUtils
 {

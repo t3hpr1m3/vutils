@@ -26,13 +26,6 @@ DECLARE_CLASS( "VSocket" );
 namespace VUtils
 {
 
-/*------------------------------*
- * Initialize static members    *
- *------------------------------*/
-bool	VSocket::mLogEnabled = false;
-FILE*	VSocket::mLogFile = NULL;
-VMutex	VSocket::mLogMutex;
-
 /********************************************************************
  *																	*
  *          C O N S T R U C T I O N / D E S T R U C T I O N         *
@@ -344,9 +337,6 @@ bool VSocket::SetSockOpt(int pOptName, const void *pOptValue,
  *  				Optional port number to bind to.
  *  @param		pSocketType
  *  				Type of socket.
- *  @param		pEvents
- *  				Bitmask of flags specifying what events the
- *          		application is interested in.
  *  @param		pSockAddr
  *  				Optional address to bind to.
  */
@@ -413,9 +403,6 @@ bool VSocket::Create(VUSHORT pPort /*=0*/,
  *
  *  @param		pHandle
  *  				Handle to the socket to attach to.
- *  @param		pEvents
- *  				Bitmask of flags specifying what events the
- *          		application is interested in.
  */
 /*------------------------------------------------------------------*
  * MODIFICATIONS:                                                   *
@@ -490,32 +477,6 @@ SOCKET VSocket::Detach()
 		VERROR("Invalid socket handle\n");
 
 	return END_FUNC(vHandle);
-}
-
-/*------------------------------------------------------------------*
- *                            InitLog()                             *
- *------------------------------------------------------------------*/
-/**
- *	@brief		Initializes logging within the socket library.
- *
- *  @param		pLogName
- *  				Name to be used for the log file.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS:                                                   *
- *  Date        Description                         Author          *
- *============  ==================================  =============== *
- *                                                                  *
- *------------------------------------------------------------------*/
-bool VSocket::InitLog(const char *pLogName)
-{
-	if (!mLogEnabled)
-	{
-		mLogFile = fopen(pLogName, "a+");
-		if (mLogFile != NULL)
-			mLogEnabled = true;
-	}
-	return mLogEnabled;
 }
 
 /*------------------------------------------------------------------*
@@ -739,18 +700,16 @@ void VSocket::Close()
  * MODIFICATIONS:                                                   *
  *  Date        Description                         Author          *
  *============  ==================================  =============== *
- * 1-Jun-2003	Added EINPROGRESS to the list of	Josh Williams	*
- *				errors to be "ignored" on connect.					*
  *                                                                  *
  *------------------------------------------------------------------*/
-bool VSocket::Connect(const char *pAddress, VUSHORT pPort, VUSHORT pTimeout)
+bool VSocket::Connect(const char *pAddress, VUSHORT pPort)
 {
 	int		vResult = 0;
 	bool	vRetval = true;
 	char	vDestAddr[IP_ADDR_LEN];
 	VULONG	vAddrIP;
 
-	BEG_FUNC("Connect")("%p[%s], %d, %d", pAddress, pAddress, pPort, pTimeout);
+	BEG_FUNC("Connect")("%p[%s], %d, %d", pAddress, pAddress, pPort);
 
 	/*
 	 * Already connected?
@@ -805,31 +764,10 @@ bool VSocket::Connect(const char *pAddress, VUSHORT pPort, VUSHORT pTimeout)
 		if (vResult != 0)
 		{
 			SETERRNO();
-			if (errno != EWOULDBLOCK && errno != EINPROGRESS)
-			{
-				mError = errno;
-				VERROR("connect returned error-%d:%s\n", errno,
-							strerror(errno));
-				return END_FUNC(VERR_CONNECT);
-			}
-
-
-			else if (errno == EINPROGRESS)
-			{
-				VTRACE("Connect returned EINPROGRESS\n", 
-							strerror(errno));
-				mStatus = SS_CONNECTING;
-				vRetval = true;
-				vResult = 0;
-			}
-			else
-			{
-				mStatus = SS_CONNECTING;
-				vRetval = true;
-				vResult = 0;// We're in non-blocking mode,
-							// so EWOULDBLOCK is ok.
-			}
 			mError = errno;
+			VERROR("connect returned error-%d:%s\n", errno,
+						strerror(errno));
+			return END_FUNC(VERR_CONNECT);
 		}
 		else
 			mStatus = SS_CONNECTED; // Connection established.  EUREKA!

@@ -14,11 +14,16 @@
 #if !defined(__VLIST_H_INCLUDED__)
 #define __VLIST_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 #include <list>
 
 /* Local Headers */
 #include <vutils/VMutex.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace VUtils
 {

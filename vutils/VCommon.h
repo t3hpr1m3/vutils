@@ -11,6 +11,18 @@
  *																		*
  *																		*
  *======================================================================*/
+#if !defined(__VCOMMON_H_INCLUDED__)
+#define __VCOMMON_H_INCLUDED__
+
+#include <vutils/VPlatform.h>
+
+/* System Headers */
+
+/* Local Headers */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 template <class T>
 T MIN(T a, T b)
 {
@@ -22,3 +34,5 @@ T MAX(T a, T b)
 {
     return (a > b ? a : b);
 }
+
+#endif // __VCOMMON_H_INCLUDED__

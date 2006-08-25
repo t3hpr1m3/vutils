@@ -14,12 +14,14 @@
 #if !defined(__VTYPES_H_INCLUDED__)
 #define __VTYPES_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 typedef unsigned short  VUSHORT;
 typedef unsigned int    VUINT;
 typedef unsigned long   VULONG;
 typedef unsigned char   VBYTE;
 
-#if defined(WIN32) || defined(_WINDOWS)
+#if VPLATFORM == PLATFORM_WINDOWS
 #define THREAD_FUNC		void
 #define THREAD_RETURN	return
 #else

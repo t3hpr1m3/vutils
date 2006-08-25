@@ -14,10 +14,15 @@
 #if !defined(__VQUEUE_H_INCLUDED__)
 #define __VQUEUE_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 #include <queue>
 
 /* Local Headers */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 using std::queue;
 

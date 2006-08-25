@@ -14,10 +14,15 @@
 #if !defined(__VHASHTABLE_H_INCLUDED__)
 #define __VHASHTABLE_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 
 /* Local Headers */
 #include <vutils/VVector.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 using std::allocator;
 using std::pair;
@@ -156,8 +161,8 @@ public:
 		return m_vPointers[i]->Value();
 	}
 
-	Iterator			Begin() const;
-	Iterator			End() const;
+	//Iterator			Begin() const;
+	//Iterator			End() const;
 	void				Resize(size_type n)
 	{
 		size_type i = m_vValues.size();

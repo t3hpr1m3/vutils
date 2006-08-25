@@ -21,6 +21,9 @@
 /* Local Headers */
 #include <vutils/VTime.h>
 #include <vutils/VString.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* Macros */
 

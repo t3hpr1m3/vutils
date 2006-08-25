@@ -14,10 +14,15 @@
 #if !defined(__VSOCKADDR_H_INCLUDED__)
 #define __VSOCKADDR_H_INCLUDED__
 
+#include <vutils/VPlatform.h>
+
 /* System Headers */
 
 /* Local Headers */
 #include <vutils/VTypes.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* Macros */
 

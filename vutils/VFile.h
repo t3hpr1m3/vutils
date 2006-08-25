@@ -1,22 +1,16 @@
-/*============================================================================*
- *                                                                            *
- *  Copyright (C) 2004 UDPViper  All Rights Reserved                          *
- *                                                                            *
- *  AUTHORS                                                                   *
- *      V-Man <V-Man@udpviper.com>                                            *
- *      chmod 700 <phlux@udpviper.com>                                        *
- *                                                                            *
- *  WEB                                                                       *
- *      www.udpviper.com <- go there for stuff.  like boobies                 *
- *                                                                            *
- *                      * * N O   S T E A L I N G * *                         *
- *                                                                            *
- *============================================================================*
- *                                  CHANGELOG                                 *
- *    Date      Description                                     Author        *
- * -----------  ---------------------------------------------   ------------- *
- *                                                                            *
- *============================================================================*/
+/*======================================================================*
+ *																		*
+ *					* * N O   S T E A L I N G * *						*
+ *																		*
+ *  Copyright (C) 2004 V-Man   All Rights Reserved						*
+ *																		*
+ *	AUTHOR																*
+ *		V-Man <V-Man@udpviper.com>										*
+ *																		*
+ *	Dis is mah stuff.  If'n you use it, I get dah credit.  k?			*
+ *																		*
+ *																		*
+ *======================================================================*/
 #if !defined(__VFILE_H_INCLUDED__)
 #define __VFILE_H_INCLUDED__
 
@@ -31,6 +25,9 @@
 #include <vutils/VTime.h>
 #include <vutils/VString.h>
 #include <vutils/VException.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 using std::fstream;
 

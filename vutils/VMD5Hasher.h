@@ -20,6 +20,9 @@
 
 /* Local Headers */
 #include <vutils/VObject.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* Macros */
 

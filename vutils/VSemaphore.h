@@ -27,6 +27,9 @@ typedef sem_t	sem_handle;
 
 /* Local Headers */
 #include <vutils/VException.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace VUtils
 {

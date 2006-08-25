@@ -21,10 +21,10 @@
 #include <vutils/VTypes.h>
 #include <vutils/VMD5Hasher.h>
 
+DECLARE_CLASS( "VConfig" );
+
 namespace VUtils
 {
-
-DECLARE_CLASS( "VConfig" );
 
 VConfig::VConfig()
 {

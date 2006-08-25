@@ -14,13 +14,16 @@
 #if !defined(__VASYNCSOCKET_H_INCLUDED__)
 #define __VASYNCSOCKET_H_INCLUDED__
 
-#include "vutils/VPlatform.h"
+#include <vutils/VPlatform.h>
 
 /* System Headers */
 
-/* System Headers */
+/* Local Headers */
 #include <vutils/VObject.h>
 #include <vutils/VSocketCommon.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 namespace VUtils
 {
