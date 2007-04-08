@@ -438,6 +438,60 @@ const VString VString::Trim() const
 	return vRetString;
 }
 
+/*------------------------------------------------------------------*
+ *								Split()								*
+ *------------------------------------------------------------------*/
+/**
+ *	@brief		Splits the string into parts based on the separator
+ *				provided.  Can also be given a count.
+ *	@author		Josh Williams
+ *	@date		08-Apr-2007
+ *
+ *
+ *	@param		pSearch	String to be replaced
+ *	@param		pString	String to be inserted
+ *
+ *	@returns	(VList) List of chunks
+ */
+/*------------------------------------------------------------------*
+ * MODIFICATIONS													*
+ *	Date		Description							Author			*
+ * ===========	==================================	===============	*
+ *																	*
+ *------------------------------------------------------------------*/
+const VStringList VString::Split(const char pSep, const int pCount)
+{
+	VStringList vStrings;
+	int			vCount = 0;
+	int			vLength = 0;
+	char		*vBuffer = NewBuf(mSize);
+	const char	*vPc1, *vPc2;
+
+	vPc1 = C_Str();
+	vPc2 = strchr(vPc1, pSep);
+	while ((vPc2 != NULL) && vCount < pCount)
+	{
+		vLength = vPc2 - vPc1;
+		memcpy(vBuffer, vPc1, vLength);
+		vBuffer[vLength] = '\0';
+		vStrings.push_back(vBuffer);
+
+		vPc1 = vPc2;
+		while (*vPc1 == pSep)
+			vPc1++;
+
+		vCount++;
+		vPc2 = strchr(vPc1, pSep);
+	}
+
+	if (strlen(vPc1) > 0)
+		vStrings.push_back(vPc1);
+
+	delete[] vBuffer;
+		
+	return vStrings;
+}
+
 /********************************************************************
  *                          O P E R A T O R S                       *
  ********************************************************************/

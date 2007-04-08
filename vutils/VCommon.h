@@ -35,4 +35,6 @@ T MAX(T a, T b)
     return (a > b ? a : b);
 }
 
+#define VUNUSED(x) (void)x;
+
 #endif // __VCOMMON_H_INCLUDED__

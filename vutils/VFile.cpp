@@ -254,10 +254,10 @@ VRESULT VFile::ReadLine(VString& pBuffer, int &pBytes)
 	if (pBytes > MAX_READ)
 		pBytes = MAX_READ;
 
-	/* if we're already at eof, return 0 */
+	/* if we're already at eof, return -1 */
 	if (mHandle.eof())
 	{
-		pBytes = 0;
+		pBytes = -1;
 		return END_FUNC(VERR_SUCCESS);
 	}
 

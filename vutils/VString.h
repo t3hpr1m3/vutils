@@ -24,11 +24,15 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+#include <vutils/VVector.h>
 
 using std::ostream;
 
 namespace VUtils
 {
+
+class VString;
+typedef VVector<VString> VStringList;
 
 class VString
 {
@@ -62,6 +66,7 @@ public:
 	int				Compare(const char *pString) const;
 	int				Replace(const char *pSearch, const char *pString);
 	const VString	Trim() const;
+	const VStringList	Split(const char pSep, const int pCount);
 
 	/*==================================*
 	 *			   OPERATORS			*

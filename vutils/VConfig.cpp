@@ -60,7 +60,7 @@ bool VConfig::Load(const char *pFile)
 		vBytesRead = vMaxRead;
 		vMaxRead = 256;
 
-		if (vBytesRead == 0)
+		if (vBytesRead == -1)
 			break;
 
 		// check for a blank line
