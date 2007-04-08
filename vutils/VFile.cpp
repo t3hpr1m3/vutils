@@ -45,7 +45,9 @@ namespace VUtils
 #if VPLATFORM == PLATFORM_WINDOWS
 char    VFile::FILE_SEP = '\\';
 #elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+#ifndef MAX_PATH
 int		VFile::MAX_PATH = 256;
+#endif
 char    VFile::FILE_SEP = '/';
 #endif
 int VFile::MAX_READ = 2048;

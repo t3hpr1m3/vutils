@@ -156,7 +156,9 @@ private:
 	 *==================================*/
 #if defined(WIN32) || defined(_WINDOWS)     /* Windows platforms */
 #else                                       /* Unix/linux */
+#ifndef MAX_PATH
 	static int			MAX_PATH;		/**< Maximum length for path strings */
+#endif
 #endif                                      /* End platform specific */
 	static int			MAX_READ;		/**< Maximum number of bytes to read
 											 on each call to Read() or
