@@ -459,7 +459,7 @@ const VString VString::Trim() const
  * ===========	==================================	===============	*
  *																	*
  *------------------------------------------------------------------*/
-const VStringList VString::Split(const char pSep, const int pCount)
+const VStringList VString::Split(const char pSep, const int pCount /*=0*/)
 {
 	VStringList vStrings;
 	int			vCount = 0;
@@ -469,8 +469,11 @@ const VStringList VString::Split(const char pSep, const int pCount)
 
 	vPc1 = C_Str();
 	vPc2 = strchr(vPc1, pSep);
-	while ((vPc2 != NULL) && vCount < pCount)
+	while ((vPc2 != NULL))
 	{
+		if (pCount != 0 && vCount >= pCount)
+			break;
+
 		vLength = vPc2 - vPc1;
 		memcpy(vBuffer, vPc1, vLength);
 		vBuffer[vLength] = '\0';

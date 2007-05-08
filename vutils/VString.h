@@ -66,7 +66,7 @@ public:
 	int				Compare(const char *pString) const;
 	int				Replace(const char *pSearch, const char *pString);
 	const VString	Trim() const;
-	const VStringList	Split(const char pSep, const int pCount);
+	const VStringList	Split(const char pSep, const int pCount = 0);
 
 	/*==================================*
 	 *			   OPERATORS			*
