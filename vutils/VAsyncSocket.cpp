@@ -788,11 +788,8 @@ bool VAsyncSocket::Bind(unsigned short pPort, const char *pAddress/*=NULL*/)
 	 * Need to set the SO_REUSEADDR option so we don't lock ourselves out.
 	 */
 	int vVal = 1;
-	vReturnCode = SetSockOpt(SO_REUSEADDR, &vVal, sizeof(vVal));
-	if (vReturnCode != 0)
+	if (!SetSockOpt(SO_REUSEADDR, &vVal, sizeof(vVal)))
 	{
-		SETERRNO();
-		mError = errno;
 		VERROR("unable to set socket as reusable.  errno: %d\n", mError);
 		return END_FUNC(false);
 	}
