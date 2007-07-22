@@ -67,6 +67,7 @@ public:
 	int				Replace(const char *pSearch, const char *pString);
 	const VString	Trim() const;
 	const VStringList	Split(const char pSep, const int pCount = 0);
+	const VStringList	Split(const char *pSep, const int pCount = 0);
 
 	/*==================================*
 	 *			   OPERATORS			*

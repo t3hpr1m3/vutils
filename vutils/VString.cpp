@@ -448,8 +448,8 @@ const VString VString::Trim() const
  *	@date		08-Apr-2007
  *
  *
- *	@param		pSearch	String to be replaced
- *	@param		pString	String to be inserted
+ *	@param		pSep	Separator
+ *	@param		pCount	Number of times to split.
  *
  *	@returns	(VList) List of chunks
  */
@@ -457,6 +457,9 @@ const VString VString::Trim() const
  * MODIFICATIONS													*
  *	Date		Description							Author			*
  * ===========	==================================	===============	*
+ * 22-Jul-2007	Add empty string to the end of the	Josh Williams	*
+ * 				list if the separator was the last					*
+ * 				character.											*
  *																	*
  *------------------------------------------------------------------*/
 const VStringList VString::Split(const char pSep, const int pCount /*=0*/)
@@ -489,6 +492,43 @@ const VStringList VString::Split(const char pSep, const int pCount /*=0*/)
 
 	if (strlen(vPc1) > 0)
 		vStrings.push_back(vPc1);
+	else
+		vStrings.push_back("");
+
+	delete[] vBuffer;
+		
+	return vStrings;
+}
+
+const VStringList VString::Split(const char *pSep, const int pCount /*=0*/)
+{
+	VStringList vStrings;
+	int			vCount = 0;
+	int			vLength = 0;
+	char		*vBuffer = NewBuf(mSize);
+	const char	*vPc1, *vPc2;
+
+	vPc1 = C_Str();
+	vPc2 = strstr(vPc1, pSep);
+	while ((vPc2 != NULL))
+	{
+		if (pCount != 0 && vCount >= pCount)
+			break;
+
+		vLength = vPc2 - vPc1;
+		memcpy(vBuffer, vPc1, vLength);
+		vBuffer[vLength] = '\0';
+		vStrings.push_back(vBuffer);
+
+		vCount++;
+		vPc1 = vPc2 + strlen(pSep);
+		vPc2 = strstr(vPc1, pSep);
+	}
+
+	if (strlen(vPc1) > 0)
+		vStrings.push_back(vPc1);
+	else
+		vStrings.push_back("");
 
 	delete[] vBuffer;
 		

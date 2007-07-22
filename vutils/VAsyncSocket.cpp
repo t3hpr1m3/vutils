@@ -720,6 +720,7 @@ void VAsyncSocket::AsyncSelect(long pEvents
  * MODIFICATIONS:                                                   *
  *  Date        Description                         Author          *
  *============  ==================================  =============== *
+ * 22-Jul-2007	Added logic to set SO_REUSEADDR.	Josh Williams	*
  *                                                                  *
  *------------------------------------------------------------------*/
 bool VAsyncSocket::Bind(unsigned short pPort, const char *pAddress/*=NULL*/)
@@ -781,6 +782,19 @@ bool VAsyncSocket::Bind(unsigned short pPort, const char *pAddress/*=NULL*/)
 			mError = EINVAL;
 			return END_FUNC(false);
 		}
+	}
+
+	/*
+	 * Need to set the SO_REUSEADDR option so we don't lock ourselves out.
+	 */
+	int vVal = 1;
+	vReturnCode = SetSockOpt(SO_REUSEADDR, &vVal, sizeof(vVal));
+	if (vReturnCode != 0)
+	{
+		SETERRNO();
+		mError = errno;
+		VERROR("unable to set socket as reusable.  errno: %d\n", mError);
+		return END_FUNC(false);
 	}
 
 	/*
