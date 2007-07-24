@@ -63,6 +63,9 @@ VAsyncSocket::~VAsyncSocket()
 	{
 		mProcessLock.Lock();
 		mProcessLock.Unlock();
+#if VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
+		pthread_detach(mProcessThread);
+#endif
 	}
 	if (mLogFile != NULL)
 		fclose(mLogFile);
