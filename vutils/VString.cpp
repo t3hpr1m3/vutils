@@ -200,13 +200,21 @@ void VString::Resize(int pSize)
 
 		/* resize the member buffer */
 		delete[] mData;
-		mData = NewBuf(mSize);
+		mData = NewBuf(pSize + 1);
+		mSize = pSize + 1;
 
 		/* copy in the data */
 		if (pSize > mLength)
+		{
 			memcpy(mData, vTemp, mLength);
+			mData[mLength] = '\0';
+		}
 		else
+		{
 			memcpy(mData, vTemp, pSize);
+			mData[pSize] = '\0';
+			mLength = pSize;
+		}
 
 		/* kill the temp var */
 		delete[] vTemp;
