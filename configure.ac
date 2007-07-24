@@ -27,13 +27,13 @@ AC_MSG_CHECKING([whether to enable debug symbols])
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--disable-debug], [turn off debugging symbols]))
 
-if test x"$enable_debug" = x"no"; then
+if test x"$disable_debug" = x"no"; then
 	AC_MSG_RESULT(no)
 	CFLAGS=${CFLAGS-"-g"}
 	CXXFLAGS=${CXXFLAGS-"-g"}
+	AC_DEFINE(DEBUG, 1, [Define to turn on debugging code])
 else
 	AC_MSG_RESULT([yes])
-	AC_DEFINE(DEBUG, 1, [Define to turn on debugging code])
 fi
 
 # Checks for header files.
