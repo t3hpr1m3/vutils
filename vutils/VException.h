@@ -70,6 +70,7 @@ public:
 	/*==================================*
 	 *			   OPERATORS			*
 	 *==================================*/
+	friend ostream&		operator<<(ostream& pOs, const VException &pEx);
 
 protected:
 	/*==================================*
