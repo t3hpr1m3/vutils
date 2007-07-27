@@ -240,7 +240,7 @@ void VString::Resize(int pSize)
  *
  *	@param		pString	Char array with optional printf-style formatting
  *
- *	@returns	void
+ *	@returns	Self-reference.
  */
 /*------------------------------------------------------------------*
  * MODIFICATIONS													*
@@ -248,9 +248,8 @@ void VString::Resize(int pSize)
  * ===========	==================================	===============	*
  *																	*
  *------------------------------------------------------------------*/
-void VString::Copy(const char *pString, ...)
+VString& VString::Copy(const char *pString, ...)
 {
-
 	int vLength;
 	va_list vArgs;
 	char vBuffer[1024];
@@ -269,6 +268,8 @@ void VString::Copy(const char *pString, ...)
 	
 	strncpy(mData, vBuffer, vLength);
 	mSize = vLength+1;
+
+	return *this;
 }
 
 /*------------------------------------------------------------------*
@@ -283,7 +284,7 @@ void VString::Copy(const char *pString, ...)
  *
  *	@param		pString	Char array with optional printf-style formatting
  *
- *	@returns	void
+ *	@returns	Self reference.
  */
 /*------------------------------------------------------------------*
  * MODIFICATIONS													*
@@ -291,7 +292,7 @@ void VString::Copy(const char *pString, ...)
  * ===========	==================================	===============	*
  *																	*
  *------------------------------------------------------------------*/
-void VString::Cat(const char *pString, ...)
+VString& VString::Cat(const char *pString, ...)
 {
 	int		vLength;
 	char	*vTemp;
@@ -303,7 +304,7 @@ void VString::Cat(const char *pString, ...)
 
 	vLength = strlen(vBuffer);
 	if (vLength == 0)
-		return;
+		return *this;
 	else
 	{
 		vTemp = NewBuf(vLength + strlen(mData) + 1);
@@ -318,9 +319,10 @@ void VString::Cat(const char *pString, ...)
 		mLength += vLength;
 	}
 	mSize = mLength+1;
+	return *this;
 }
 
-void VString::Cat(const char pChar)
+VString& VString::Cat(const char pChar)
 {
 	char *vTemp;
 
@@ -331,6 +333,7 @@ void VString::Cat(const char pChar)
 	mData = vTemp;
 	mLength++;
 	mSize++;
+	return *this;
 }
 
 /*------------------------------------------------------------------*

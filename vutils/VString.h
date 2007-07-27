@@ -60,9 +60,9 @@ public:
 	 *			  OPERATIONS			*
 	 *==================================*/
 	void			Resize(int pSize);
-	void			Copy(const char *pString, ...);
-	void			Cat(const char *pString, ...);
-	void			Cat(const char pChar);
+	VString&		Copy(const char *pString, ...);
+	VString&		Cat(const char *pString, ...);
+	VString&		Cat(const char pChar);
 	int				Compare(const char *pString) const;
 	int				Replace(const char *pSearch, const char *pString);
 	const VString	Trim() const;
