@@ -301,6 +301,7 @@ VString& VString::Cat(const char *pString, ...)
 
 	va_start(vArgs, pString);
 	vsprintf(vBuffer, pString, vArgs);
+	va_end(vArgs);
 
 	vLength = strlen(vBuffer);
 	if (vLength == 0)
