@@ -19,6 +19,7 @@
 /* System Headers */
 #include <utility>
 #include <map>
+#include <stdlib.h>
 
 /* Local Headers */
 #include <vutils/VString.h>
