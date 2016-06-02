@@ -1,15 +1,27 @@
 /*======================================================================*
- *																		*
- *					* * N O   S T E A L I N G * *						*
- *																		*
- *  Copyright (C) 2004 V-Man   All Rights Reserved						*
- *																		*
- *	AUTHOR																*
- *		V-Man <V-Man@udpviper.com>										*
- *																		*
- *	Dis is mah stuff.  If'n you use it, I get dah credit.  k?			*
- *																		*
- *																		*
+ *                                                                      *
+ *  Copyright (C) 2004-2016 Josh Williams (vmizzle@gmail.com)           *
+ *                                                                      *
+ * Permission is hereby granted, free of charge, to any person          *
+ * obtaining a copy of this software and associated documentation files *
+ * (the "Software"), to deal in the Software without restriction,       *
+ * including without limitation the rights to use, copy, modify, merge, *
+ * publish, distribute, sublicense, and/or sell copies of the Software, *
+ * and to permit persons to whom the Software is furnished to do so,    *
+ * subject to the following conditions:                                 *
+ *                                                                      *
+ * The above copyright notice and this permission notice shall be       *
+ * included in all copies or substantial portions of the Software.      *
+ *                                                                      *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,      *
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF   *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND                *
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS  *
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN   *
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN    *
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE     *
+ * SOFTWARE.                                                            *
+ *                                                                      *
  *======================================================================*/
 #if !defined(__VLOG_H_INCLUDED__)
 #define __VLOG_H_INCLUDED__
@@ -19,6 +31,7 @@
 /* System Headers */
 #include <string>
 #include <cstdarg>
+#include <cstdio>
 #include <iostream>
 #include <sstream>
 
@@ -86,8 +99,7 @@
 #define END_FUNCV()
 #endif // TRACE_ENABLE
 
-namespace VUtils
-{
+namespace VUtils {
 	
 void BegFunc(const char *pFunc, const char *pMsg, ...);
 void EndFunc(const std::string& pFunc);
@@ -99,8 +111,7 @@ int	MakeFName(const char *pClass, const char *pFunc, std::string& pCFname);
 
 
 
-class VLog : public VMutex
-{
+class VLog : public VMutex {
 
 friend class VErrorBlock;
 
@@ -110,26 +121,24 @@ public:
 	public:
 		CUDPFuncWrapper(const char *pFunc)
 			: mFunc(pFunc) {}
-		void operator() (const char *pFormat, ...) const
-		{
-			va_list		vArgs;
-			static char	vBuffer[1024];
-			if (pFormat == NULL)
+		void operator() (const char *pFormat, ...) const {
+			va_list     vArgs;
+			static char vBuffer[1024];
+			if (pFormat == NULL) {
 				BegFunc(mFunc, NULL);
-			else
-			{
+			} else {
 				va_start(vArgs, pFormat);
 				vsnprintf(vBuffer, 1024-1, pFormat, vArgs);
 				BegFunc(mFunc, vBuffer);
 			}
 		}
 	private:
-		const char	*mFunc;
+		const char      *mFunc;
 	};
 
 public:
 	/*==================================*
-	 *	   CONSTRUCTION/DESTRUCTION		*
+	 *     CONSTRUCTION/DESTRUCTION     *
 	 *==================================*/
 	VLog();
 	VLog(const VLog& pRhs);
@@ -137,110 +146,105 @@ public:
 
 public:
 	/*==================================*
-	 *			  ATTRIBUTES			*
+	 *             ATTRIBUTES           *
 	 *==================================*/
-	static VLog&		GetLog();
-	int					GetIndent();
+	static VLog&        GetLog();
+	int                 GetIndent();
 
 public:
 	/*==================================*
-	 *			  OPERATIONS			*
+	 *           OPERATIONS             *
 	 *==================================*/
-	static void			EnableTrace(const char *pPgmName);
-	void				Init(int pPid);
-	void				Timestamps(bool pTimestamps = true);
-	void				SetIndent(int pIndent);
+	static void         EnableTrace(const char *pPgmName);
+	void                Init(int pPid);
+	void                Timestamps(bool pTimestamps = true);
+	void                SetIndent(int pIndent);
 #ifdef TRACE_ENABLE
-	void				Trace(const char *pMsg, ...);
+	void                Trace(const char *pMsg, ...);
 #else
-	void				Trace(const char *pMsg, ...) {if (pMsg) (void)0;}
+	void                Trace(const char *pMsg, ...) {if (pMsg) (void)0;}
 #endif
 
 public:
 	/*==================================*
-	 *			   OPERATORS			*
+	 *           OPERATORS              *
 	 *==================================*/
 
 protected:
 	/*==================================*
-	 *             CALLBACKS			*
+	 *             CALLBACKS            *
 	 *==================================*/
 
 private:
 	/*==================================*
-	 *			   INTERNALS			*
+	 *             INTERNALS            *
 	 *==================================*/
-	void				WriteRaw(const char *pText) const;
-	void 				Write(const char *pText) const;
+	void                WriteRaw(const char *pText) const;
+	void                Write(const char *pText) const;
 
 private:
 	/*==================================*
 	 *             VARIABLES            *
 	 *==================================*/
-	static bool			mTraceOn;		/**< whether or not tracing has been
-										  	 enabled at run-time */
-	static std::string	mLogName;		/**< name of the trace file used for
-										  	 output */
-	FILE*				mLogHandle;		/**< file-system handle to the trace
-										  	 file */
-	int					mIndentLvl;		/**< level of indentation to perform
-										  	 when writing trace info	*/
-	bool				mLogOpen;		/**< whether or not the log file is
-										  	 open */
-	bool				mTimestamps;	/**< whether or not to add timestamps to
-											 each line of trace output */
-	static int			mMainPid;		/**< Main pid (central log file) */
+	static bool         mTraceOn;       /**< whether or not tracing has been
+	                                         enabled at run-time */
+	static std::string  mLogName;       /**< name of the trace file used for
+	                                         output */
+	FILE*               mLogHandle;     /**< file-system handle to the trace
+	                                         file */
+	int                 mIndentLvl;     /**< level of indentation to perform
+	                                         when writing trace info */
+	bool                mLogOpen;       /**< whether or not the log file is
+	                                         open */
+	bool                mTimestamps;    /**< whether or not to add timestamps to
+	                                         each line of trace output */
+	static int          mMainPid;       /**< Main pid (central log file) */
 };
 
 
 
 /********************************************************************
- *																	*
- *							I N L I N E S							*
- *																	*
+ *                                                                  *
+ *                           I N L I N E S                          *
+ *                                                                  *
  ********************************************************************/
 
 /**
- *	Returns the level of indention currently set for the trace log.
+ *  Returns the level of indention currently set for the trace log.
  */
 inline
-int VLog::GetIndent()
-{
+int VLog::GetIndent() {
 	return mIndentLvl;
 }
 
 /**
- *	Sets whether or not timestamps should be inserted for each line
- *	of trace output.
+ *  Sets whether or not timestamps should be inserted for each line
+ *  of trace output.
  */
 inline
-void VLog::Timestamps(bool pTimestamps /*=true*/)
-{
+void VLog::Timestamps(bool pTimestamps /*=true*/) {
 	mTimestamps = pTimestamps;
 }
 /**
- *	Sets the level of indentation to use for tracing.  Never call this function
- *	directly.  It is handled by the ZFuncWrapper class.
+ *  Sets the level of indentation to use for tracing.  Never call this function
+ *  directly.  It is handled by the ZFuncWrapper class.
  */
 inline
-void VLog::SetIndent(int pIndent)
-{
+void VLog::SetIndent(int pIndent) {
 	mIndentLvl += pIndent;
 }
 
 /**
- *	Logs function entry and increases log indentation.
+ *  Logs function entry and increases log indentation.
  */
 inline
-void BegFunc(const char *pFunc, const char *pMsg, ...)
-{
-	static char 	vBuffer[1024];
-	static va_list	vArgs;
+void BegFunc(const char *pFunc, const char *pMsg, ...) {
+	static char     vBuffer[1024];
+	static va_list  vArgs;
 
-	if (pMsg == NULL)
+	if (pMsg == NULL) {
 		VTRACE("%s() -> ENTRY\n", pFunc);
-	else
-	{
+	} else {
 		va_start(vArgs, pMsg);
 		vsnprintf(vBuffer, sizeof(vBuffer)-1, pMsg, vArgs);
 		va_end(vArgs);
@@ -250,44 +254,40 @@ void BegFunc(const char *pFunc, const char *pMsg, ...)
 }
 
 /**
- *	Logs function exit and decreases log indentation.
+ *  Logs function exit and decreases log indentation.
  */
 inline
-void EndFunc(const std::string& pFunc)
-{
+void EndFunc(const std::string& pFunc) {
 	VLog::GetLog().SetIndent(-1);
 	VTRACE("%s() <- EXIT\n", pFunc.c_str());
 	return;
 }
 
 /**
- *	@overload
+ *  @overload
  */
 inline
-bool EndFunc(const std::string& pFunc, bool pResult)
-{
+bool EndFunc(const std::string& pFunc, bool pResult) {
 	VLog::GetLog().SetIndent(-1);
 	VTRACE("%s() <- EXIT with %s\n", pFunc.c_str(), pResult ? "true" : "false");
 	return pResult;
 }
 
 /**
- *	@overload
+ *  @overload
  */
 inline
-VRESULT EndFunc(const std::string& pFunc, VRESULT pResult)
-{
+VRESULT EndFunc(const std::string& pFunc, VRESULT pResult) {
 	VLog::GetLog().SetIndent(-1);
 	VTRACE("%s() <- EXIT with %s\n", pFunc.c_str(), Z_TO_STRING(pResult));
 	return pResult;
 }
 
 /**
- *	@overload
+ *  @overload
  */
 template <class T>
-T EndFunc(const std::string& pFunc, const T& pResult)
-{
+T EndFunc(const std::string& pFunc, const T& pResult) {
 	std::ostringstream	output_stream;
 	output_stream << pFunc << "() <- EXIT with " << pResult << "\n";
 	VLog::GetLog().SetIndent(-1);
@@ -296,8 +296,7 @@ T EndFunc(const std::string& pFunc, const T& pResult)
 }
 
 inline
-int MakeFName(const char *pClass, const char *pFunc, std::string& pCFname)
-{
+int MakeFName(const char *pClass, const char *pFunc, std::string& pCFname) {
 	pCFname = pClass;
 	pCFname += "::";
 	pCFname += pFunc;

@@ -1,15 +1,27 @@
 /*======================================================================*
- *																		*
- *					* * N O   S T E A L I N G * *						*
- *																		*
- *  Copyright (C) 2004 V-Man   All Rights Reserved						*
- *																		*
- *	AUTHOR																*
- *		V-Man <V-Man@udpviper.com>										*
- *																		*
- *	Dis is mah stuff.  If'n you use it, I get dah credit.  k?			*
- *																		*
- *																		*
+ *                                                                      *
+ *  Copyright (C) 2004-2016 Josh Williams (vmizzle@gmail.com)           *
+ *                                                                      *
+ * Permission is hereby granted, free of charge, to any person          *
+ * obtaining a copy of this software and associated documentation files *
+ * (the "Software"), to deal in the Software without restriction,       *
+ * including without limitation the rights to use, copy, modify, merge, *
+ * publish, distribute, sublicense, and/or sell copies of the Software, *
+ * and to permit persons to whom the Software is furnished to do so,    *
+ * subject to the following conditions:                                 *
+ *                                                                      *
+ * The above copyright notice and this permission notice shall be       *
+ * included in all copies or substantial portions of the Software.      *
+ *                                                                      *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,      *
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF   *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND                *
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS  *
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN   *
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN    *
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE     *
+ * SOFTWARE.                                                            *
+ *                                                                      *
  *======================================================================*/
 #include <vutils/VFile.h>
 
@@ -39,79 +51,62 @@ using std::ifstream;
 
 DECLARE_CLASS( "VFile" );
 
-namespace VUtils
-{
+namespace VUtils {
 
 #if VPLATFORM == PLATFORM_WINDOWS
 char    VFile::FILE_SEP = '\\';
 #elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
 #ifndef MAX_PATH
-int		VFile::MAX_PATH = 256;
+int     VFile::MAX_PATH = 256;
 #endif
 char    VFile::FILE_SEP = '/';
 #endif
 int VFile::MAX_READ = 2048;
 
 /********************************************************************
- *																	*
  *          C O N S T R U C T I O N / D E S T R U C T I O N         *
- *																	*
  ********************************************************************/
-VFile::VFile()
-{
+VFile::VFile() {
 	Reset();
 }
 
-VFile::VFile(const VString& pFile, long pOps /*=FIL_READ*/)
-{
+VFile::VFile(const VString& pFile, long pOps /*=FIL_READ*/) {
 	VRESULT vRetval = Open(pFile, pOps);
 	if (vRetval != VERR_SUCCESS)
 		EXCPT(VFileException, FormatError(vRetval));
 }
 
-VFile::~VFile()
-{
+VFile::~VFile() {
 	Close();
 }
 
 /********************************************************************
- *																	*
  *                        A T T R I B U T E S                       *
- *																	*
  ********************************************************************/
 
 /********************************************************************
- *																	*
  *                        O P E R A T I O N S                       *
- *																	*
  ********************************************************************/
 
 /*------------------------------------------------------------------*
- *							 	 Open()								*
+ *                               Open()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Attempts to open the specified file for reading/writing.
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @brief      Attempts to open the specified file for reading/writing.
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		pFile
- *					Path, relative or absolute, of the file
- *					to be opened.
- *	@param		pOps
- *					VFile::FileOp flags indicating how the file is to be processed.
+ *  @param      pFile
+ *                  Path, relative or absolute, of the file
+ *                  to be opened.
+ *  @param      pOps
+ *                  VFile::FileOp flags indicating how the file is to be processed.
  *
- *	@return		Success/failure
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @return     Success/failure
  *------------------------------------------------------------------*/
-VRESULT VFile::Open(const VString& pFile, long pOps /*=FIL_READ*/)
-{
-	VFileInfo	vInfo;
-	VRESULT		vResult;
+VRESULT VFile::Open(const VString& pFile, long pOps /*=FIL_READ*/) {
+	VFileInfo   vInfo;
+	VRESULT     vResult;
 
 	BEG_FUNC("Open")("%p(%s), %d", &pFile, pFile.C_Str(), pOps);
 
@@ -127,16 +122,14 @@ VRESULT VFile::Open(const VString& pFile, long pOps /*=FIL_READ*/)
 	/* Try and stat the file */
 	vResult = Stat(pFile, vInfo);
 
-	if (vResult == VERR_FILE_NOT_FOUND)
-	{
-		if (!(pOps & FIL_CREATE))
-		{
+	if (vResult == VERR_FILE_NOT_FOUND) {
+		if (!(pOps & FIL_CREATE)) {
 			VTRACE("File not found and create flag not passed\n");
 			return END_FUNC(VERR_FILE_NOT_FOUND);
 		}
-	}
-	else if (vResult != VERR_SUCCESS)
+	} else if (vResult != VERR_SUCCESS) {
 		return END_FUNC(vResult);
+	}
 
 
 	mFileInfo = vInfo;
@@ -147,37 +140,29 @@ VRESULT VFile::Open(const VString& pFile, long pOps /*=FIL_READ*/)
 }
 
 /*------------------------------------------------------------------*
- *							 	 Read()								*
+ *                               Read()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Reads the specified number of bytes from the file.
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @brief      Reads the specified number of bytes from the file.
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		pBuffer
- *					Buffer to hold the data read from file.
- *	@param		pBytes
- *					Size of pBuffer.
+ *  @param      pBuffer
+ *                  Buffer to hold the data read from file.
+ *  @param      pBytes
+ *                  Size of pBuffer.
  *
- *	@exception	VFileException	File is at invalid status, or an error
- *								is encountered during reading.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @exception  VFileException  File is at invalid status, or an error
+ *                  is encountered during reading.
  *------------------------------------------------------------------*/
-VRESULT VFile::Read(char *pBuffer, int &pBytes)
-{
-    int vBytesToRead;
+VRESULT VFile::Read(char *pBuffer, int &pBytes) {
+	int vBytesToRead;
 
 	BEG_FUNC("Read")("%p, %d", pBuffer, pBytes);
 
 	vBytesToRead = pBytes;
 
-	if (mHandle.is_open() == false)
-	{
+	if (mHandle.is_open() == false) {
 		VTRACE("called with file not open\n");
 		return END_FUNC(VERR_FILE_NOT_OPEN);
 	}
@@ -189,16 +174,15 @@ VRESULT VFile::Read(char *pBuffer, int &pBytes)
 		vBytesToRead = MAX_READ;
 
 	/* if we're already at eof, return 0 */
-	if (mHandle.eof())
-	{
+	if (mHandle.eof()) {
 		pBytes = 0;
 		VTRACE("Already at EOF\n");
 		return END_FUNC(VERR_SUCCESS);
-  	}		
+	}
 
 	/* read the data */
 	mHandle.read(pBuffer, vBytesToRead);
-	
+
 	/* did we hit eof? */
 	if (mHandle.eof())
 		VTRACE("EOF hit\n");
@@ -215,33 +199,28 @@ VRESULT VFile::Read(char *pBuffer, int &pBytes)
 }
 
 /*------------------------------------------------------------------*
- *							 ReadLine()								*
+ *                           ReadLine()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Reads the specified number of bytes from the file, up to
- *				the first newline or eof.
+ *  @brief      Reads the specified number of bytes from the file, up to
+ *              the first newline or eof.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		pBuffer	VString object to hold the data read
- *	@param		pBytes	Maximum number of bytes to read from file
+ *  @param      pBuffer
+ *                  VString object to hold the data read
+ *  @param      pBytes
+ *                  Maximum number of bytes to read from file
  *
- *	@return		Number of bytes read.  0 is returned if already at eof.
+ *  @return     Number of bytes read.  0 is returned if already at eof.
  *
- *	@exception	VFileException	File is at invalid status, or an error
- *								is encountered during reading.
+ *  @exception  VFileException  File is at invalid status, or an error
+ *                              is encountered during reading.
  *
- *	@remarks	The newline is not included in the returned string.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @remarks    The newline is not included in the returned string.
  *------------------------------------------------------------------*/
-VRESULT VFile::ReadLine(VString& pBuffer, int &pBytes)
-{
+VRESULT VFile::ReadLine(VString& pBuffer, int &pBytes) {
 	char	*vBuffer;
 
 	BEG_FUNC("ReadLine")("%p, %d", &pBuffer, pBytes);
@@ -255,8 +234,7 @@ VRESULT VFile::ReadLine(VString& pBuffer, int &pBytes)
 		pBytes = MAX_READ;
 
 	/* if we're already at eof, return -1 */
-	if (mHandle.eof())
-	{
+	if (mHandle.eof()) {
 		pBytes = -1;
 		return END_FUNC(VERR_SUCCESS);
 	}
@@ -268,17 +246,14 @@ VRESULT VFile::ReadLine(VString& pBuffer, int &pBytes)
 	/* read the data */
 	mHandle.getline(vBuffer, pBytes);
 
-	if (mHandle.bad())
-	{
+	if (mHandle.bad()) {
 		delete[] pBuffer;
 		return END_FUNC(VERR_BAD_FILE_HANDLE);
-	}
-	else if (mHandle.fail() && !mHandle.eof())
-	{
+	} else if (mHandle.fail() && !mHandle.eof()) {
 		delete[] vBuffer;
 		return END_FUNC(VERR_READ_FILE);
 	}
-	
+
 	pBuffer = vBuffer;
 
 	delete[] vBuffer;
@@ -288,32 +263,27 @@ VRESULT VFile::ReadLine(VString& pBuffer, int &pBytes)
 }
 
 /*------------------------------------------------------------------*
- *							 	Write()								*
+ *                              Write()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Writes the data in the supplied buffer to the current
- *				position within the file.
+ *  @brief      Writes the data in the supplied buffer to the current
+ *              position within the file.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		pBuffer		Data to be written
- *	@param		pBytes		Number of bytes contained in pcBuffer to
- *							be written.
+ *  @param      pBuffer
+ *                  Data to be written
+ *  @param      pBytes
+ *                  Number of bytes contained in pcBuffer to
+ *                  be written.
  *
- *	@return		Success/failure
+ *  @return     Success/failure
  *
- *	@exception	VFileException	File is at invalid status, or an error
- *								is encountered during writing.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @exception  VFileException  File is at invalid status, or an error
+ *                              is encountered during writing.
  *------------------------------------------------------------------*/
-VRESULT VFile::Write(const char *pBuffer, int pBytes)
-{
+VRESULT VFile::Write(const char *pBuffer, int pBytes) {
 	BEG_FUNC("Write")("%p, %d", pBuffer, pBytes);
 
 	if (mHandle.is_open() == false)
@@ -328,30 +298,24 @@ VRESULT VFile::Write(const char *pBuffer, int pBytes)
 }
 
 /*------------------------------------------------------------------*
- *							 	Seek()								*
+ *                              Seek()                              *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Positions the read/write pointer to the specified offset
- *				within the file.
+ *  @brief      Positions the read/write pointer to the specified offset
+ *              within the file.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		pOffset		Position, in bytes, to orient the pointer.
+ *  @param      pOffset
+ *                  Position, in bytes, to orient the pointer.
  *
- *	@return		Success/failure
+ *  @return     Success/failure
  *
- *	@exception	VFileException	File is at invalid status, or an error
- *								is encountered during reading.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @exception  VFileException  File is at invalid status, or an error
+ *                              is encountered during reading.
  *------------------------------------------------------------------*/
-VRESULT VFile::Seek(long pOffset)
-{
+VRESULT VFile::Seek(long pOffset) {
 	BEG_FUNC("Seek")("%d", pOffset);
 
 	if (mHandle.is_open() == false)
@@ -371,25 +335,18 @@ VRESULT VFile::Seek(long pOffset)
 }
 
 /*------------------------------------------------------------------*
- *							 	Close()								*
+ *                              Close()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Closes the specified file, returning all internal
- *				variables to a clean state.
+ *  @brief      Closes the specified file, returning all internal
+ *              variables to a clean state.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@return		None
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @return     None
  *------------------------------------------------------------------*/
-void VFile::Close()
-{
+void VFile::Close() {
 	BEG_FUNC("Close")(NULL);
 
 	if (IsOpen())
@@ -401,25 +358,18 @@ void VFile::Close()
 }
 
 /*------------------------------------------------------------------*
- *							 Truncate()								*
+ *                           Truncate()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Wipes the currently opened file clean, leaving it with
- *				a size of 0 bytes.
+ *  @brief      Wipes the currently opened file clean, leaving it with
+ *              a size of 0 bytes.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@return		Success/failure
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @return     Success/failure
  *------------------------------------------------------------------*/
-VRESULT VFile::Truncate()
-{
+VRESULT VFile::Truncate() {
 	BEG_FUNC("Truncate")(NULL);
 
 	/* store the name of the currently open file */
@@ -430,43 +380,36 @@ VRESULT VFile::Truncate()
 
 	/* reopen the file, passing the truncate flag */
 	return END_FUNC(OpenFile(mFileInfo.Full(), mOp | FIL_TRUNCATE));
-}	
+}
 
 /*------------------------------------------------------------------*
- *								Stat()								*
+ *                               Stat()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Requests statistical information about the specified
- *				file.
+ *  @brief      Requests statistical information about the specified file.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		pFile		Path, relative or absolute, of the file
- *							to stat.
- *	@param		pInfo		Object to hold the obtained information.
+ *  @param      pFile
+ *                  Path, relative or absolute, of the file to stat.
+ *  @param      pInfo
+ *                  Object to hold the obtained information.
  *
- *	@retval		VERR_INVALID_PATH	Path is invalid
- *	@retval		VERR_FILE_NOT_FOUND	Specified file does not exist
- *	@retval		VERR_SUCCESS		Everything is ok, my son
+ *  @retval     VERR_INVALID_PATH   Path is invalid
+ *  @retval     VERR_FILE_NOT_FOUND Specified file does not exist
+ *  @retval     VERR_SUCCESS        Everything is ok, my son
  *
- *	@exception	VFileException	Path specified is actually a directory.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @exception  VFileException      Path specified is actually a directory.
  *------------------------------------------------------------------*/
-VRESULT VFile::Stat(const VString& pFile, VFileInfo& pInfo)
-{
-	struct stat	vFileStat;
-	VRESULT		vRetval;
+VRESULT VFile::Stat(const VString& pFile, VFileInfo& pInfo) {
+	struct stat vFileStat;
+	VRESULT     vRetval;
 
 	BEG_FUNC("Stat")("%p, %p", &pFile, &pInfo);
 
 	if ((vRetval = ResolvePath(pFile, pInfo.mPath, pInfo.mName,
-						pInfo.mExt)) != VERR_SUCCESS)
+					pInfo.mExt)) != VERR_SUCCESS)
 		return END_FUNC(vRetval);
 
 	if (stat(pInfo.Path() + pInfo.Name(), &vFileStat) == -1)
@@ -482,41 +425,38 @@ VRESULT VFile::Stat(const VString& pFile, VFileInfo& pInfo)
 }
 
 /*------------------------------------------------------------------*
- *							   ResolvePath()						*
+ *                            ResolvePath()                         *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Evaluates a filename supplied, negotiating special characters
- *				such as '../' and '~'.
+ *  @brief      Evaluates a filename supplied, negotiating special characters
+ *              such as '../' and '~'.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		pFile		Path of the file to be resolved
- *	@param		pPath		Evaluated absolute path of the file
- *	@param		pName		Simple name of the file (no path)
- *	@param		pExt		File extension
+ *  @param      pFile
+ *                  Path of the file to be resolved
+ *  @param      pPath
+ *                  Evaluated absolute path of the file
+ *  @param      pName
+ *                  Simple name of the file (no path)
+ *  @param      pExt
+ *                  File extension
  *
- *	@return		Success/failure
+ *  @return     Success/failure
  *
- *	@exception	VInvalidPathException	Empty filename was supplied, or
- *										something went wrong during parsing.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @exception  VInvalidPathException   Empty filename was supplied, or
+ *                                      something went wrong during parsing.
  *------------------------------------------------------------------*/
 VRESULT VFile::ResolvePath(const VString& pFile, VString& pPath,
-						VString& pName, VString& pExt)
-{
-	VString		vFull;
-	char		vWork[MAX_PATH];
-	char		vChunkL[MAX_PATH];
-	char		vChunkR[MAX_PATH];
+		VString& pName, VString& pExt) {
+	VString     vFull;
+	char        vWork[MAX_PATH];
+	char        vChunkL[MAX_PATH];
+	char        vChunkR[MAX_PATH];
 
 	BEG_FUNC("ResolvePath")("%s, %p, %p, %p", pFile.C_Str(), &pPath,
-								&pName, &pExt);
+			&pName, &pExt);
 
 	/* make sure we weren't passed an empty file name */
 	if (pFile.Length() == 0)
@@ -525,8 +465,7 @@ VRESULT VFile::ResolvePath(const VString& pFile, VString& pPath,
 	/* on Win32, there is already a (*sigh*) helper function for this */
 #if VPLATFORM == PLATFORM_WINDOWS
 	char *vFile;
-	if (GetFullPathName(pFile, MAX_PATH, vWork, &vFile) == 0)
-	{
+	if (GetFullPathName(pFile, MAX_PATH, vWork, &vFile) == 0) {
 		VTRACE("GetFullPathName() failed with error %d\n", GetLastError());
 		return END_FUNC(VERR_INVALID_PATH);
 	}
@@ -535,25 +474,19 @@ VRESULT VFile::ResolvePath(const VString& pFile, VString& pPath,
 
 #elif VPLATFORM == PLATFORM_MAC || VPLATFORM == PLATFORM_LINUX
 
-	if (pFile[0] == '/')
-	{
+	if (pFile[0] == '/') {
 		/* absolute path supplied */
 		vFull = pFile;
-	}
-	else if (pFile[0] == '~')
-	{
+	} else if (pFile[0] == '~') {
 		/* home directory */
 		char *vHome = getenv("HOME");
-		if (vHome == NULL)
-		{
+		if (vHome == NULL) {
 			VString vErr("Error getting environment variable HOME");
 			vErr.Cat("\nOS Error => [%s]", strerror(errno));
 			EXCPT(VException, vErr);
 		}
 		vFull = vHome + pFile.SubStr(1);
-	}
-	else
-	{
+	} else {
 		/* relative path */
 		getcwd(vWork, sizeof(vWork));
 		vFull = vWork;
@@ -563,28 +496,26 @@ VRESULT VFile::ResolvePath(const VString& pFile, VString& pPath,
 	/* replace any ../'s we find */
 	strncpy(vWork, vFull.C_Str(), sizeof(vWork));
 	char *vPc = strstr(vWork, "../");
-	while (vPc != NULL)
-	{
+	while (vPc != NULL) {
 		strncpy(vChunkR, vPc+3, sizeof(vChunkR));
 		*vPc = '\0';
 		strncpy(vChunkL, vWork, sizeof(vChunkL));
 		vChunkL[strlen(vChunkL)-1] = '\0';
 		vPc = strrchr(vChunkL, '/');
-		if (vPc != NULL)
-		{
+		if (vPc != NULL) {
 			*vPc = '\0';
 			sprintf(vWork, "%s/%s", vChunkL, vChunkR);
-		}
-		else
+		} else {
 			EXCPT(VInvalidPathException, vFull);
+
+		}
 
 		vPc = strstr(vWork, "../");
 	}
 
 	/* now, replace any ./'s we find */
 	vPc = strstr(vWork, "./");
-	while (vPc != NULL)
-	{
+	while (vPc != NULL) {
 		strncpy(vChunkR, vPc+2, sizeof(vChunkR));
 		*vPc = '\0';
 		strncpy(vChunkL, vWork, sizeof(vChunkL));
@@ -614,43 +545,35 @@ VRESULT VFile::ResolvePath(const VString& pFile, VString& pPath,
 }
 
 /*------------------------------------------------------------------*
- *							 CheckSum()								*
+ *                           CheckSum()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Generates an MD5 sum of the currently opened file.
+ *  @brief      Generates an MD5 sum of the currently opened file.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		pSum		Buffer to hold the 32 byte sum
+ *  @param      pSum
+ *                  Buffer to hold the 32 byte sum
  *
- *	@return		Success/failure
+ *  @return     Success/failure
  *
- *	@remarks	If the sum has already been computed for this file,
- *				the existing value is returned.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @remarks    If the sum has already been computed for this file,
+ *              the existing value is returned.
  *------------------------------------------------------------------*/
-VRESULT VFile::CheckSum(VString& pSum)
-{
-	static ifstream		vFile;
-	static char			vBuffer[1024];
-	static char			vDigest[33];
-	static int			vBytes = 0;
-	static VMD5Hasher	vHasher;
-	VRESULT				vRetval = VERR_SUCCESS;
+VRESULT VFile::CheckSum(VString& pSum) {
+	static ifstream     vFile;
+	static char         vBuffer[1024];
+	static char         vDigest[33];
+	static int          vBytes = 0;
+	static VMD5Hasher   vHasher;
+	VRESULT             vRetval = VERR_SUCCESS;
 
 	BEG_FUNC("CheckSum")("%p", &pSum);
 
-	if (mFileHashed == false)
-	{
+	if (mFileHashed == false) {
 		vFile.open(this->Full(), ifstream::binary);
-		if (vFile.bad())
-		{
+		if (vFile.bad()) {
 			return END_FUNC(VERR_OPEN_FILE);
 		}
 
@@ -659,8 +582,7 @@ VRESULT VFile::CheckSum(VString& pSum)
 		vFile.read(vBuffer, 1024);
 		vBytes = vFile.gcount();
 
-		while (vBytes > 0)
-		{
+		while (vBytes > 0) {
 			vHasher.Update((VBYTE *)vBuffer, vBytes);
 			vFile.read(vBuffer, 1024);
 			vBytes = vFile.gcount();
@@ -671,11 +593,10 @@ VRESULT VFile::CheckSum(VString& pSum)
 		vHasher.Final();
 
 		vRetval = vHasher.GetDigestString(vDigest, sizeof(vDigest));
-		if (vRetval != VERR_SUCCESS)
-		{
+		if (vRetval != VERR_SUCCESS) {
 			return END_FUNC(vRetval);
 		}
-			
+
 		vDigest[32] = '\0';
 		mFileHashed = true;
 	}
@@ -683,45 +604,32 @@ VRESULT VFile::CheckSum(VString& pSum)
 	pSum = vDigest;
 
 	return END_FUNC(VERR_SUCCESS);
-}	
+}
 
 /********************************************************************
- *																	*
  *                          O P E R A T O R S                       *
- *																	*
  ********************************************************************/
 
 /********************************************************************
- *																	*
  *                          C A L L B A C K S                       *
- *																	*
  ********************************************************************/
 
 /********************************************************************
- *																	*
  *                          I N T E R N A L S                       *
- *																	*
  ********************************************************************/
 
 /*------------------------------------------------------------------*
- *								Reset()								*
+ *                              Reset()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Resets all internal variables to an initial state.
+ *  @brief      Resets all internal variables to an initial state.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@return		None
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @return     None
  *------------------------------------------------------------------*/
-void VFile::Reset()
-{
+void VFile::Reset() {
 	BEG_FUNC("Reset")(NULL);
 
 	mFileInfo.Reset();
@@ -732,30 +640,25 @@ void VFile::Reset()
 }
 
 /*------------------------------------------------------------------*
- *							 OpenFile()								*
+ *                           OpenFile()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Allocates a standard library handle for the specified
- *				file.  This function is used internally to perform the
- *				low-level file opening.
+ *  @brief      Allocates a standard library handle for the specified
+ *              file.  This function is used internally to perform the
+ *              low-level file opening.
  *
- *	@author		Josh Williams
- *	@date		02-Dec-2004
+ *  @author     Josh Williams
+ *  @date       02-Dec-2004
  *
- *	@param		strFile		Full path to the file to be opened.
- *	@param		ops			Flags to use on file open.
+ *  @param      pFile
+ *                  Full path to the file to be opened.
+ *  @param      pOps
+ *                  Flags to use on file open.
  *
- *	@return		Success/failure
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @return     Success/failure
  *------------------------------------------------------------------*/
-VRESULT VFile::OpenFile(const VString& pFile, long pOps)
-{
-	fstream::openmode	vMode = static_cast<fstream::openmode>(0);
+VRESULT VFile::OpenFile(const VString& pFile, long pOps) {
+	fstream::openmode vMode = static_cast<fstream::openmode>(0);
 
 	BEG_FUNC("OpenFile")("%p(%s), %d", &pFile, pFile.C_Str(), pOps);
 
@@ -780,13 +683,12 @@ VRESULT VFile::OpenFile(const VString& pFile, long pOps)
 	return END_FUNC(VERR_SUCCESS);
 }
 
-bool VFile::IsDirectory(const char *pPath)
-{
+bool VFile::IsDirectory(const char *pPath) {
 	BEG_FUNC("IsDirectory")("%p(%s)", pPath, pPath);
 
 	struct stat vSt;
 	if (stat(pPath, &vSt) == -1)
-	    return END_FUNC(false);
+		return END_FUNC(false);
 
 	return END_FUNC(S_ISDIR(vSt.st_mode));
 }

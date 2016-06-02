@@ -1,15 +1,27 @@
 /*======================================================================*
- *																		*
- *					* * N O   S T E A L I N G * *						*
- *																		*
- *  Copyright (C) 2004 V-Man   All Rights Reserved						*
- *																		*
- *	AUTHOR																*
- *		V-Man <V-Man@udpviper.com>										*
- *																		*
- *	Dis is mah stuff.  If'n you use it, I get dah credit.  k?			*
- *																		*
- *																		*
+ *                                                                      *
+ *  Copyright (C) 2004-2016 Josh Williams (vmizzle@gmail.com)           *
+ *                                                                      *
+ * Permission is hereby granted, free of charge, to any person          *
+ * obtaining a copy of this software and associated documentation files *
+ * (the "Software"), to deal in the Software without restriction,       *
+ * including without limitation the rights to use, copy, modify, merge, *
+ * publish, distribute, sublicense, and/or sell copies of the Software, *
+ * and to permit persons to whom the Software is furnished to do so,    *
+ * subject to the following conditions:                                 *
+ *                                                                      *
+ * The above copyright notice and this permission notice shall be       *
+ * included in all copies or substantial portions of the Software.      *
+ *                                                                      *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,      *
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF   *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND                *
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS  *
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN   *
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN    *
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE     *
+ * SOFTWARE.                                                            *
+ *                                                                      *
  *======================================================================*/
 #if !defined(__VSOCKADDR_H_INCLUDED__)
 #define __VSOCKADDR_H_INCLUDED__
@@ -26,8 +38,7 @@
 
 /* Macros */
 
-namespace VUtils
-{
+namespace VUtils {
 
 /**
  *  @class      VSockAddr
@@ -38,11 +49,10 @@ namespace VUtils
  *              structure.  Handles flipping port numbers and converting
  *              IP addresses to text form.
  */
-class VSockAddr : public sockaddr_in
-{
+class VSockAddr : public sockaddr_in {
 public:
 	/*==================================*
-	 *	   CONSTRUCTION/DESTRUCTION		*
+	 *     CONSTRUCTION/DESTRUCTION     *
 	 *==================================*/
 	VSockAddr();
 	VSockAddr(const sockaddr& sa);
@@ -52,35 +62,35 @@ public:
 
 public:
 	/*==================================*
-	 *			  ATTRIBUTES			*
+	 *             ATTRIBUTES           *
 	 *==================================*/
-	const char*			GetAddr() const;
-	VULONG		 		GetAddrIP() const;
-	VUSHORT		 		GetPort() const;
+	const char*         GetAddr() const;
+	VULONG              GetAddrIP() const;
+	VUSHORT             GetPort() const;
 
 public:
 	/*==================================*
-	 *			  OPERATIONS			*
+	 *           OPERATIONS             *
 	 *==================================*/
-	void				SetAddr(const char *pAddr);
-	void				SetAddrIP(VULONG pAddrIP);
-	void				SetPort(VUSHORT pPort);
+	void                SetAddr(const char *pAddr);
+	void                SetAddrIP(VULONG pAddrIP);
+	void                SetPort(VUSHORT pPort);
 
 public:
 	/*==================================*
-	 *			   OPERATORS			*
+	 *             OPERATORS            *
 	 *==================================*/
-	const VSockAddr&	operator=(const sockaddr& sa);
-	const VSockAddr&	operator=(const sockaddr_in& sin);
+	const VSockAddr&    operator=(const sockaddr& sa);
+	const VSockAddr&    operator=(const sockaddr_in& sin);
 
 protected:
 	/*==================================*
-	 *			   CALLBACKS			*
+	 *             CALLBACKS            *
 	 *==================================*/
 
 private:
 	/*==================================*
-	 *			   INTERNALS			*
+	 *             INTERNALS            *
 	 *==================================*/
 
 private:
@@ -92,111 +102,98 @@ private:
 
 
 /********************************************************************
- *																	*
- *							I N L I N E S							*
- *																	*
+ *                                                                  *
+ *                           I N L I N E S                          *
+ *                                                                  *
  ********************************************************************/
 
 inline
-VSockAddr::VSockAddr()
-{
+VSockAddr::VSockAddr() {
 	sin_family = AF_INET;
 	sin_port = 0;
 	sin_addr.s_addr = 0;
 }
 
 inline
-VSockAddr::VSockAddr(const sockaddr& sa)
-{
+VSockAddr::VSockAddr(const sockaddr& sa) {
 	memcpy(this, &sa, sizeof(sockaddr));
 }
 
 inline
-VSockAddr::VSockAddr(const sockaddr_in& sin)
-{
+VSockAddr::VSockAddr(const sockaddr_in& sin) {
 	memcpy(this, &sin, sizeof(sockaddr_in));
 }
 
 /**
- *	@param	pAddr
- *				Dotted decimal IP address.
- *	@param	pPort
- *				Port number to assign.
+ *  @param      pAddr
+ *                  Dotted decimal IP address.
+ *  @param      pPort
+ *                  Port number to assign.
  */
 inline
-VSockAddr::VSockAddr(const char* pAddr, const VUSHORT pPort /*=0*/)
-{
+VSockAddr::VSockAddr(const char* pAddr, const VUSHORT pPort /*=0*/) {
 	sin_family = AF_INET;
 	sin_port = htons(pPort);
 	sin_addr.s_addr = inet_addr(pAddr);
 }
 
 /**
- *  @param	pAddrIP
- *  			Network byte ordered address.
- *	@param	pPort
- *				Port number to assign.
+ *  @param      pAddrIP
+ *                  Network byte ordered address.
+ *  @param      pPort
+ *                  Port number to assign.
  */
 inline
-VSockAddr::VSockAddr(VULONG pAddrIP, VUSHORT pPort /*=0*/)
-{
+VSockAddr::VSockAddr(VULONG pAddrIP, VUSHORT pPort /*=0*/) {
 	sin_family = AF_INET;
 	sin_port = htons(pPort);
 	sin_addr.s_addr = htonl(pAddrIP);
 }
 
 /**
- *	@brief Retrieves the address for this structure in dotted decimal form
+ *  @brief Retrieves the address for this structure in dotted decimal form
  */
 inline
-const char* VSockAddr::GetAddr() const
-{
+const char* VSockAddr::GetAddr() const {
 	return inet_ntoa(sin_addr);
 }
 
 /**
- *	@brief Retrieves the address for this structure in network byte order.
+ *  @brief Retrieves the address for this structure in network byte order.
  */
 inline
-unsigned long VSockAddr::GetAddrIP() const
-{
+unsigned long VSockAddr::GetAddrIP() const {
 	return ntohl(sin_addr.s_addr);
 }
 
 inline
-unsigned short VSockAddr::GetPort() const
-{
+unsigned short VSockAddr::GetPort() const {
 	return ntohs(sin_port);
 }
 
 inline
-void VSockAddr::SetAddr(const char *pAddr)
-{
+void VSockAddr::SetAddr(const char *pAddr) {
 	sin_addr.s_addr = inet_addr(pAddr);
 }
 
 inline
-void VSockAddr::SetAddrIP(VULONG pAddrIP)
-{
+void VSockAddr::SetAddrIP(VULONG pAddrIP) {
 	sin_addr.s_addr = pAddrIP;
 }
 
 inline
-void VSockAddr::SetPort(VUSHORT pPort)
-{
+void VSockAddr::SetPort(VUSHORT pPort) {
 	sin_port = htons(pPort);
 }
 
 inline
-const VSockAddr& VSockAddr::operator=(const sockaddr& sa)
-{
+const VSockAddr& VSockAddr::operator=(const sockaddr& sa) {
 	memcpy (this, &sa, sizeof(sockaddr));
 	return *this;
 }
 
 inline
-const VSockAddr& VSockAddr::operator=(const sockaddr_in& sin)
-{
+const VSockAddr& VSockAddr::operator=(const sockaddr_in& sin) {
 	memcpy (this, &sin, sizeof(sockaddr_in));
 	return *this;
 }
@@ -206,4 +203,3 @@ const VSockAddr& VSockAddr::operator=(const sockaddr_in& sin)
 #endif // __VSOCKADDR_H_INCLUDED__
 
 /* vi: set ts=4: */
-

@@ -82,7 +82,7 @@ public:
 	                        long pEvents = FD_READ | FD_WRITE | FD_OOB |
 	                        FD_ACCEPT | FD_CONNECT | FD_CLOSE);
 	SOCKET              Detach();
-    static VAsyncSocket* FromHandle(SOCKET pHandle);
+	static VAsyncSocket* FromHandle(SOCKET pHandle);
 	int                 GetLastError();
 	bool                GetPeerName(char *pAddress, int pAddrLen,
 	                        unsigned short *pPort = NULL);
@@ -152,7 +152,7 @@ private:
 	                                             currently monitoring for. */
 	unsigned short      mPort;              /**< Local port for this socket */
 	short               mTimeout;           /**< Number of seconds for connect,
-                                                 select, etc */
+	                                             select, etc */
 	VSockAddr           mLocal;             /**< Connection info for the local
 	                                             socket */
 	VSockAddr           mEndPoint;          /**< Connection info for the remote

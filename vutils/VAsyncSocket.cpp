@@ -35,8 +35,7 @@
 
 DECLARE_CLASS( "VAsyncSocket" );
 
-namespace VUtils
-{
+namespace VUtils {
 
 /*------------------------------*
  * Initialize static members    *

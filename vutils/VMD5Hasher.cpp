@@ -1,15 +1,27 @@
 /*======================================================================*
- *																		*
- *					* * N O   S T E A L I N G * *						*
- *																		*
- *  Copyright (C) 2004 V-Man   All Rights Reserved						*
- *																		*
- *	AUTHOR																*
- *		V-Man <V-Man@udpviper.com>										*
- *																		*
- *	Dis is mah stuff.  If'n you use it, I get dah credit.  k?			*
- *																		*
- *																		*
+ *                                                                      *
+ *  Copyright (C) 2004-2016 Josh Williams (vmizzle@gmail.com)           *
+ *                                                                      *
+ * Permission is hereby granted, free of charge, to any person          *
+ * obtaining a copy of this software and associated documentation files *
+ * (the "Software"), to deal in the Software without restriction,       *
+ * including without limitation the rights to use, copy, modify, merge, *
+ * publish, distribute, sublicense, and/or sell copies of the Software, *
+ * and to permit persons to whom the Software is furnished to do so,    *
+ * subject to the following conditions:                                 *
+ *                                                                      *
+ * The above copyright notice and this permission notice shall be       *
+ * included in all copies or substantial portions of the Software.      *
+ *                                                                      *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,      *
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF   *
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND                *
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS  *
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN   *
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN    *
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE     *
+ * SOFTWARE.                                                            *
+ *                                                                      *
  *======================================================================*/
 #include <vutils/VMD5Hasher.h>
 
@@ -28,8 +40,7 @@ using std::ifstream;
 
 DECLARE_CLASS( "VMD5Hasher" );
 
-namespace VUtils
-{
+namespace VUtils {
 
 VBYTE VMD5Hasher::MD5_PADDING[64] = {
 	0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -82,119 +93,85 @@ VBYTE VMD5Hasher::MD5_PADDING[64] = {
 /* Static Variables */
 
 /********************************************************************
- *																	*
  *          C O N S T R U C T I O N / D E S T R U C T I O N         *
- *																	*
  ********************************************************************/
-VMD5Hasher::VMD5Hasher()
-{
+VMD5Hasher::VMD5Hasher() {
 	mHashComplete = false;
 }
 
-VMD5Hasher::~VMD5Hasher()
-{
-
-}
+VMD5Hasher::~VMD5Hasher() {}
 
 /********************************************************************
- *																	*
  *                        A T T R I B U T E S                       *
- *																	*
  ********************************************************************/
 
 /*------------------------------------------------------------------*
- *							  GetDigest()							*
+ *                            GetDigest()                           *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Requests the computed digest in raw form.
- *	@author		Josh Williams
- *	@date		12-Sep-2004
+ *  @brief      Requests the computed digest in raw form.
+ *  @author     Josh Williams
+ *  @date       12-Sep-2004
  *
- *	@param		pBuf	buff to hold the generated digest.
- *	@param		pLen	Size of pBuf
+ *  @param      pBuf
+ *                  buff to hold the generated digest.
+ *  @param      pLen
+ *                  Size of pBuf
  *
- *	@return
- *				- Z_OK		Digest returned
- *				- Z_FAIL	Hashing not yet performed
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @return
+ *              - Z_OK      Digest returned
+ *              - Z_FAIL    Hashing not yet performed
  *------------------------------------------------------------------*/
-VRESULT VMD5Hasher::GetDigest(VBYTE *pBuf, VUINT pLen)
-{
+VRESULT VMD5Hasher::GetDigest(VBYTE *pBuf, VULONG pLen) {
 	BEG_FUNC("GetDigest")("%p, %d", pBuf, pLen);
 
-	if (mHashComplete)
-	{
+	if (mHashComplete) {
 		memcpy(pBuf, mDigest, MIN( sizeof(mDigest), pLen ));
 		return END_FUNC(VERR_SUCCESS);
-	}
-	else
-	{
+	} else {
 		return END_FUNC(VERR_INVALID_STATUS);
 	}
 }
 
 /*------------------------------------------------------------------*
- *							GetDigestString()						*
+ *                          GetDigestString()                       *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Requests the computed digest in formatted form.
- *	@author		Josh Williams
- *	@date		12-Sep-2004
+ *  @brief      Requests the computed digest in formatted form.
+ *  @author     Josh Williams
+ *  @date       12-Sep-2004
  *
- *	@param		pBuf	buff to hold the generated digest.
- * 	@param		pLen	Size of pBuf
- *
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @param      pBuf
+ *                  buff to hold the generated digest.
+ *  @param      pLen
+ *                  Size of pBuf
  *------------------------------------------------------------------*/
-VRESULT VMD5Hasher::GetDigestString(char *pBuf, VUINT pLen)
-{
+VRESULT VMD5Hasher::GetDigestString(char *pBuf, VULONG pLen) {
 	BEG_FUNC("GetDigestString")("%p, %d", pBuf, pLen);
-	if (mHashComplete)
-	{
+	if (mHashComplete) {
 		memcpy(pBuf, mDigestString, MIN( sizeof(mDigestString), pLen ));
 		return END_FUNC(VERR_SUCCESS);
-	}
-	else
-	{
+	} else {
 		return END_FUNC(VERR_INVALID_STATUS);
 	}
 }
 
 /********************************************************************
- *																	*
  *                        O P E R A T I O N S                       *
- *																	*
  ********************************************************************/
 
 /*------------------------------------------------------------------*
- *								Init()								*
+ *                              Init()                              *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Initializes all internal variables prior to generating
- *				a hash..
- *	@author		Josh Williams
- *	@date		12-Oct-2004
+ *  @brief      Initializes all internal variables prior to generating
+ *              a hash..
+ *  @author     Josh Williams
+ *  @date       12-Oct-2004
  *
- *	@returns	void
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @returns    void
  *------------------------------------------------------------------*/
-void VMD5Hasher::Init()
-{
+void VMD5Hasher::Init() {
 	BEG_FUNC("Init")(NULL);
 
 	mHashComplete = false;
@@ -210,33 +187,28 @@ void VMD5Hasher::Init()
 }
 
 /*------------------------------------------------------------------*
- *							    Update()							*
+ *                              Update()                            *
  *------------------------------------------------------------------*/
 /**
- *	@brief		MD5 block update operation.
- *	@author		Josh Williams
- *	@date		12-Oct-2004
+ *  @brief      MD5 block update operation.
+ *  @author     Josh Williams
+ *  @date       12-Oct-2004
  *
- *	@param		pBuf	Buffer containing data to be hashed
- *	@param		pLen	Number of VBYTEs contained in inBuf
+ *  @param      pBuf
+ *                  Buffer containing data to be hashed
+ *  @param      pLen
+ *                  Number of VBYTEs contained in inBuf
  *
- *	@returns	void
+ *  @returns    void
  *
- *	@remarks	Continues an MD5 message-digest operation, processing
- *				another message block, and updating the context.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @remarks    Continues an MD5 message-digest operation, processing
+ *              another message block, and updating the context.
  *------------------------------------------------------------------*/
-void VMD5Hasher::Update(VBYTE *pBuf, VUINT pLen)
-{
-	VULONG	vIn[16];
-	int		vMdi = 0;
-	VUINT	i = 0;
-	VUINT	ii = 0;
+void VMD5Hasher::Update(VBYTE *pBuf, VULONG pLen) {
+	VULONG  vIn[16];
+	int     vMdi = 0;
+	VUINT   i = 0;
+	VUINT   ii = 0;
 
 	// compute the number of VBYTEs mod 64
 	vMdi = (VUINT)((mBitCounts[0] >> 3) & 0x3F);
@@ -247,16 +219,13 @@ void VMD5Hasher::Update(VBYTE *pBuf, VUINT pLen)
 	mBitCounts[0] += ((VULONG)pLen << 3);
 	mBitCounts[1] += ((VULONG)pLen >> 29);
 
-	while (pLen--)
-	{
+	while (pLen--) {
 		// add new character to buffer, increment mdi
 		mInBuf[vMdi++] = *pBuf++;
 
 		// transform if necessary
-		if (vMdi == 0x40)
-		{
-			for (i = 0, ii = 0; i < 16; i++, ii += 4)
-			{
+		if (vMdi == 0x40) {
+			for (i = 0, ii = 0; i < 16; i++, ii += 4) {
 				vIn[i] =(((VULONG)mInBuf[ii+3]) << 24) |
 						(((VULONG)mInBuf[ii+2]) << 16) |
 						(((VULONG)mInBuf[ii+1]) << 8) |
@@ -266,30 +235,25 @@ void VMD5Hasher::Update(VBYTE *pBuf, VUINT pLen)
 			Transform(mBuffer, vIn);
 			vMdi = 0;
 		}
-	}			
+	}
 }
 
 /*------------------------------------------------------------------*
- *							  Transform()							*
+ *                            Transform()                           *
  *------------------------------------------------------------------*/
 /**
- *	@brief		Basic MD5 step.  Transforms state based on block.
- *	@author		Josh Williams
- *	@date		12-Oct-2004
+ *  @brief      Basic MD5 step.  Transforms state based on block.
+ *  @author     Josh Williams
+ *  @date       12-Oct-2004
  *
- *	@param		pBuf	Output buffer
- *	@param		pIn		Input buffer
+ *  @param      pBuf
+ *                  Output buffer
+ *  @param      pIn
+ *                  Input buffer
  *
- *	@returns	void
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @returns    void
  *------------------------------------------------------------------*/
-void VMD5Hasher::Transform(VULONG *pBuf, VULONG *pIn)
-{
+void VMD5Hasher::Transform(VULONG *pBuf, VULONG *pIn) {
 	VULONG vA = pBuf[0], vB = pBuf[1], vC = pBuf[2], vD = pBuf[3];
 
 	// Round 1
@@ -371,31 +335,24 @@ void VMD5Hasher::Transform(VULONG *pBuf, VULONG *pIn)
 }
 
 /*------------------------------------------------------------------*
- *								  Final()							*
+ *                              Final()                             *
  *------------------------------------------------------------------*/
 /**
- *	@brief		MD5 finalization.
- *	@author		Josh Williams
- *	@date		12-Oct-2004
+ *  @brief      MD5 finalization.
+ *  @author     Josh Williams
+ *  @date       12-Oct-2004
  *
- *	@returns	void
+ *  @returns    void
  *
- *	@remarks	Ends an MD5 message-digest operation, writing the
- *				message digest and zeroizing the context.
- */
-/*------------------------------------------------------------------*
- * MODIFICATIONS													*
- *	Date		Description							Author			*
- * ===========	==================================	===============	*
- *																	*
+ *  @remarks    Ends an MD5 message-digest operation, writing the
+ *              message digest and zeroizing the context.
  *------------------------------------------------------------------*/
-void VMD5Hasher::Final()
-{
-	VULONG	vIn[16];
-	int		vMdi = 0;
-	VUINT	i = 0;
-	VUINT	ii = 0;
-	VUINT	vPadLen = 0;
+void VMD5Hasher::Final() {
+	VULONG  vIn[16];
+	int     vMdi = 0;
+	VUINT   i = 0;
+	VUINT   ii = 0;
+	VUINT   vPadLen = 0;
 
 	BEG_FUNC("Final")(NULL);
 
@@ -411,8 +368,7 @@ void VMD5Hasher::Final()
 	Update(MD5_PADDING, vPadLen);
 
 	// append length in bits and transform
-	for (i = 0, ii = 0; i < 14; i++, ii += 4)
-	{
+	for (i = 0, ii = 0; i < 14; i++, ii += 4) {
 		vIn[i] =(((VULONG)mInBuf[ii+3]) << 24) |
 				(((VULONG)mInBuf[ii+2]) << 16) |
 				(((VULONG)mInBuf[ii+1]) << 8) |
@@ -422,16 +378,14 @@ void VMD5Hasher::Final()
 	Transform(mBuffer, vIn);
 
 	// store buffer in digest
-	for (i = 0, ii = 0; i < 4; i++, ii += 4)
-	{
+	for (i = 0, ii = 0; i < 4; i++, ii += 4) {
 		mDigest[ii]   = (VBYTE)( mBuffer[i]		  & 0xFF);
 		mDigest[ii+1] = (VBYTE)((mBuffer[i] >>  8) & 0xFF);
 		mDigest[ii+2] = (VBYTE)((mBuffer[i] >> 16) & 0xFF);
 		mDigest[ii+3] = (VBYTE)((mBuffer[i] >> 24) & 0xFF);
 	}
 
-	for (int i = 0; i < 16; i++)
-	{
+	for (int i = 0; i < 16; i++) {
 		sprintf(&mDigestString[i*2], "%02x", mDigest[i]);
 	}
 	VTRACE("mDigestString => [%s]\n", mDigestString);
@@ -441,8 +395,7 @@ void VMD5Hasher::Final()
 	END_FUNCV();
 }
 
-VRESULT VMD5Hasher::HashString(char *pInBuf, VUINT pInLen, char *pOutBuf, VUINT pOutLen)
-{
+VRESULT VMD5Hasher::HashString(char *pInBuf, VULONG pInLen, char *pOutBuf, VULONG pOutLen) {
 	static VMD5Hasher vHasher;
 
 	BEG_FUNC("HashString")("%p, %d, %p, %d", pInBuf, pInLen, pOutBuf, pOutLen);
@@ -457,21 +410,15 @@ VRESULT VMD5Hasher::HashString(char *pInBuf, VUINT pInLen, char *pOutBuf, VUINT 
 }
 
 /********************************************************************
- *																	*
  *                          O P E R A T O R S                       *
- *																	*
  ********************************************************************/
 
 /********************************************************************
- *																	*
  *                          C A L L B A C K S                       *
- *																	*
  ********************************************************************/
 
 /********************************************************************
- *																	*
  *                          I N T E R N A L S                       *
- *																	*
  ********************************************************************/
 
 } // End Namespace
